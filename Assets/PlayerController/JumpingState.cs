@@ -6,7 +6,7 @@ public class JumpingState : PlayerState {
 	public JumpingState (PlayerController player) : base (player) {}
 
 	public override void OnEnter () {
-		player.gameObject.rigidbody2D.AddForce(Vector2.up * 200f);
+		player.gameObject.rigidbody2D.velocity += Vector2.up * 10;
 	}
 	
 	override public void Jump () {
