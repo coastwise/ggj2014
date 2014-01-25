@@ -5,12 +5,12 @@ public class StandingState : PlayerState {
 
 	public StandingState (PlayerController player) : base (player) {}
 
-	virtual public void Jump () {
-		Debug.Log(player.joystick + " Standing Jump");
+	override public void Jump () {
+		Debug.Log("Player " + player.joystick + " Standing Jump");
 	}
 
-	virtual public void Throw () {
-		Debug.Log(player.joystick + " Standing Throw");
+	override public void Throw () {
+		Debug.Log("Player " + player.joystick + " Standing Throw");
 	}
 	
 }
