@@ -18,4 +18,6 @@ public class PlayerState {
 	virtual public void Left () {}
 	virtual public void Right () {}
 
+	virtual public void Update () {}
+
 }

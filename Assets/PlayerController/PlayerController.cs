@@ -42,5 +42,6 @@ public class PlayerController : MonoBehaviour {
 			currentState.Left();
 		}
 
+		currentState.Update();
 	}
 }
