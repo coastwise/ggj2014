@@ -17,12 +17,15 @@ public class Play : Game
 	static int gridLength = 30;
 	static int gridHeight = 16;
 
+	private bool firstSwitch = false;
 	public bool finishPressed = false;
 	public bool playDisplayed = false;
 
-	//public List<Tile> grid = new List<Tile> ();
+	public List<GameObject> tiles = new List<GameObject> ();
 	//Tile[,] grid = new Tile[gridLength,gridHeight];
-	GameObject[,] tiles = new GameObject[gridHeight,gridLength];
+	//GameObject[,] tiles = new GameObject[gridHeight,gridLength];
+
+	int[,] currentGrid = new int[gridHeight,gridLength];
 	//public override void startSetup()
 	//{
 	//	Debug.Log("playSetup");
@@ -50,36 +53,89 @@ public class Play : Game
 			}
 		}
 	}*/
+
 	private void switchColours()
 	{
-		Debug.Log ("test");
+		Debug.Log ("test test");
+		/*for (int i=0; i<gridHeight; i++) {
+			for (int j=0; j<gridLength; j++){
+				int temp = currentGrid[i,j];
+				temp++;
+				if(temp == 4)
+					temp = 0;
+				currentGrid[i,j] = temp;
+			}
+		}*/
+
+		Animator an;
+		int temp;
+		if(!firstSwitch){
+	
+		foreach (GameObject t in tiles) {
+						an = t.GetComponent<Animator> ();
+
+						temp = an.GetInteger ("Colour");
+				Vector3 pos = t.transform.position;
+				Debug.Log (pos);
+			Debug.Log ("temp: " + temp);
+			if(temp == 98)
+			temp =3;
+			else if(temp == 3)
+					temp = 2;
+			else if(temp == 99)
+				temp =0;
+			else
+				temp = 1;
+			
+				Debug.Log ("temp2: " + temp);
+				//an.SetInteger("Colour", temp);
+			}
+
+			firstSwitch = true;
+						
+		}
+
+				
+		//displayGrid ();
 	}
 	public IEnumerator switchColoursTimer() {
-		while(true)
+		while(true)//make this end when game over!!!!
 		{
 			switchColours();
 			yield return new WaitForSeconds(3);
 		}
 	}
-	public void displayGrid(){
 
-		float counterLength = 0f;
-		float counterHeight = 0f;
-		float posX = -7.25f;
-		float posY = -3.75f;
-		for (int i=0; i<gridHeight; i++) {
-			for(int j=0; j<gridLength; j++){
-			GameObject tileSquare;
-			Vector3 pos;
-			tileSquare = randomGameTile ();
-			pos = new Vector3 (posX+counterLength, posY+counterHeight, -500);
-			tileSquare.transform.position = pos;
-				tiles[i,j] = tileSquare;
-			counterLength += 0.5f;
-			}
-			counterHeight += 0.5f;
-			counterLength = 0f;
-		}
+	public void createGrid(){
+				float counterLength = 0f;
+				float counterHeight = 0f;
+				float posX = -7.25f;
+				float posY = -3.75f;
+				for (int i=0; i<gridHeight; i++) {
+						for (int j=0; j<gridLength; j++) {
+								GameObject tileSquare;
+								Vector3 pos;
+								tileSquare = getGameTile (currentGrid [i, j]);
+								pos = new Vector3 (posX + counterLength, posY + counterHeight, -500);
+								tileSquare.transform.position = pos;
+								tiles.Add(tileSquare);
+								counterLength += 0.5f;
+						}
+						counterHeight += 0.5f;
+						counterLength = 0f;
+				}
+	}
+	public void createRandomLayout(){
+				for (int i=0; i<gridHeight; i++) {
+					for(int j=0; j<gridLength; j++){
+						int random = Random.Range (0, 4);
+						currentGrid[i,j] = random;
+					}
+				}
+
+
+		/*
+		}*/
 		
 
 
@@ -131,24 +187,52 @@ public class Play : Game
 						spacer1 = 0.0f;
 			}*/
 		}
-	private GameObject randomGameTile(){
-		int random = Random.Range (0, 4);
-		GameObject gameTile;
-		switch (random) {
+	private GameObject getGameTile(int t){
+		GameObject gameTile = (GameObject)Instantiate (Resources.Load ("Tile"));
+		//GameObject gameTile;
+		//Debug.Log ("get tile #" + t);
+
+		Animator an;
+		an = gameTile.GetComponent<Animator>();
+		switch (t) {
 		case 0:
-			gameTile = (GameObject)Instantiate (Resources.Load ("Prefab/RedTile"));
+			an.SetInteger("Colour",99);
 			break;
 		case 1:
-			gameTile = (GameObject)Instantiate (Resources.Load ("Prefab/BlueTile"));
+			an.SetInteger("Colour",98);
 			break;
 		case 2:
-			gameTile = (GameObject)Instantiate (Resources.Load ("Prefab/YellowTile"));
+			an.SetInteger("Colour",3);
 			break;
 		default:
-			gameTile = (GameObject)Instantiate (Resources.Load ("Prefab/GreenTile"));
+			//an.SetInteger("Colour",3);
 			break;
 
 		}
+
+		//GameObject gameTile = (GameObject)Instantiate (Resources.Load ("Tile"));
+		//SpriteRenderer renderer = gameObject.GetComponent<SpriteRenderer>();
+		//Sprite sprite = new Sprite();
+		//renderer.sprite = sprite;
+		//Sprite sprite = new Sprite();
+		//Sprite bTexture = Resources.Load<Sprite> ("blueColour");
+		//sprite.texture =
+		/*switch (t) {
+				case 0:
+						//gameTile.renderer.material = redTexture;
+					gameTile.renderer = Resources.Load("redColour", typeof(Texture2D)) as Texture2D;
+			break;
+				case 1:
+			gameTile.renderer.material.mainTexture = Resources.Load("blueColour", typeof(Texture2D)) as Texture2D;
+			break;
+				case 2:
+			gameTile.renderer.material.mainTexture = Resources.Load("yellowColour", typeof(Texture2D)) as Texture2D;
+			break;
+				default:
+			gameTile.renderer.material.mainTexture = Resources.Load("greenColour", typeof(Texture2D)) as Texture2D;
+			break;
+						
+				}*/
 		return gameTile;
 	}
 	private void OnGUI(){

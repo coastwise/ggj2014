@@ -2,7 +2,11 @@ fileFormatVersion: 2
 guid: 9327a0346005c46ecbf1890347b34468
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - blueTexture: {fileID: 2800000, guid: a3e36d26b0b304e5c942cf7b4da0726b, type: 3}
+  - greenTexture: {fileID: 2800000, guid: 0dd0d08e78a7648cca6ef0df09411f10, type: 3}
+  - redTexture: {fileID: 2800000, guid: 4e86501ef0c514024a79ebae450429c1, type: 3}
+  - yellowTexture: {fileID: 2800000, guid: c3b3e2e9fa26d4c42a1aebcda71b73c6, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
