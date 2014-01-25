@@ -6,6 +6,9 @@ public class PlayerController : MonoBehaviour {
 
 	public int joystick;
 
+	public float groundAcceleration = 2.6f;
+	public float maxGroundVelocity = 16f;
+
 	private bool _wallRight;
 	public bool wallRight {
 		get; private set;
