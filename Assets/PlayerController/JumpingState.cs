@@ -41,6 +41,7 @@ public class JumpingState : PlayerState {
 		if (deltaY > 0.5f) {
 			//coll.gameObject.GetComponent<PlayerController>();
 			Debug.Log(player.name + " stomped " + coll.gameObject.name);
+			player.EnterState(typeof(StompingState));
 		}
 	}
 	

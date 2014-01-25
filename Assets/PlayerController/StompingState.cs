@@ -1,19 +1,23 @@
 using UnityEngine;
 using System.Collections;
 
-public class StompingState : MonoBehaviour
-{
+public class StompingState : StandingState {
 
-		// Use this for initialization
-		void Start ()
-		{
-	
-		}
-	
-		// Update is called once per frame
-		void Update ()
-		{
-	
-		}
+	public StompingState (PlayerController player) : base (player) {}
+
+	override public void Jump () {
+		Debug.Log("Player " + player.joystick + " Stomping Jump");
+		player.EnterState(typeof(JumpingState));
+	}
+
+	override public void OnEnter () {
+		Debug.Log("stomping");
+		player.StartCoroutine(WaitThenFall());
+	}
+
+	private IEnumerator WaitThenFall () {
+		yield return new WaitForSeconds(0.2f);
+		player.EnterState(typeof(FallingState));
+	}
+
 }
-
