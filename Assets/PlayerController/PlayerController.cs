@@ -47,7 +47,6 @@ public class PlayerController : MonoBehaviour {
 				} else if (contact.normal == Vector2.right || contact.normal == -Vector2.right) {
 					wall = true;
 				}
-				Debug.Log(contact.normal);
 			}
 
 			if (floor) {
