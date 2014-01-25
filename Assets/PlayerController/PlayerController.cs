@@ -35,23 +35,13 @@ public class PlayerController : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D coll){
 
 		if(coll.gameObject.tag == "floor") {
-			bool wall = false;
-			bool floor = false;
+			// this technique only works with squares. be warned
+			Vector2 delta = transform.position - coll.transform.position;
 
-			foreach (ContactPoint2D contact in coll.contacts) {
-				//Debug.Log(name + " contact normal " + contact.normal);
-				if (contact.normal == Vector2.up) {
-					floor = true;
-				} else if (contact.normal == Vector2.right || contact.normal == -Vector2.right) {
-					wall = true;
-				}
-				Debug.Log(contact.normal);
-			}
-
-			if (floor) {
-				currentState.HitFloor();
-			} else if (wall) {
+			if (Mathf.Abs(delta.x) > Mathf.Abs(delta.y)) {
 				currentState.HitWall();
+			} else if (delta.y > 0) {
+				currentState.HitFloor();
 			} // else ceiling
 		}
 
