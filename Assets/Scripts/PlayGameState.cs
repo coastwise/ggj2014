@@ -26,7 +26,8 @@ public sealed class PlayGameState :  State<GameManager> {
 			Debug.Log ("Entering PlayGame");
 			//Play.Instance.startSetup();//probably get rid of this and GAME all together
 			//Play.Instance.createTiles();
-			//Play.Instance.displayGrid();
+			Play.Instance.displayGrid();
+			Play.Instance.StartCoroutine ("switchColoursTimer");
 		}
 	}
 	/*private void createTiles(){
@@ -62,9 +63,12 @@ public sealed class PlayGameState :  State<GameManager> {
 		}*/
 	//Execute is the same as update, its just being called from cardGameStateMachine
 	public override void Execute (GameManager g) {
+
+		//Play.Instance.StartCoroutine ("switchColours");
 		if (Play.Instance.finishPressed)				
 			SetNextState (g, "mainMenu");
 		Play.Instance.finishPressed = false;
+
 	}
 	
 	public override void Exit(GameManager g) {

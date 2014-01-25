@@ -12,10 +12,9 @@ public class Play : Game
 		get { return instance ?? (instance = new GameObject("Play").AddComponent<Play>()); }
 		
 	}
+	
 
-	public GameObject Grassland;
-
-	static int gridLength = 16;
+	static int gridLength = 30;
 	static int gridHeight = 16;
 
 	public bool finishPressed = false;
@@ -23,7 +22,7 @@ public class Play : Game
 
 	//public List<Tile> grid = new List<Tile> ();
 	//Tile[,] grid = new Tile[gridLength,gridHeight];
-	//List<GameObject> tiles = new List<GameObject>();
+	GameObject[,] tiles = new GameObject[gridHeight,gridLength];
 	//public override void startSetup()
 	//{
 	//	Debug.Log("playSetup");
@@ -51,9 +50,40 @@ public class Play : Game
 			}
 		}
 	}*/
-	/*public void displayGrid(){
+	private void switchColours()
+	{
+		Debug.Log ("test");
+	}
+	public IEnumerator switchColoursTimer() {
+		while(true)
+		{
+			switchColours();
+			yield return new WaitForSeconds(3);
+		}
+	}
+	public void displayGrid(){
 
-		float spacer1 = 0f;
+		float counterLength = 0f;
+		float counterHeight = 0f;
+		float posX = -7.25f;
+		float posY = -3.75f;
+		for (int i=0; i<gridHeight; i++) {
+			for(int j=0; j<gridLength; j++){
+			GameObject tileSquare;
+			Vector3 pos;
+			tileSquare = randomGameTile ();
+			pos = new Vector3 (posX+counterLength, posY+counterHeight, -500);
+			tileSquare.transform.position = pos;
+				tiles[i,j] = tileSquare;
+			counterLength += 0.5f;
+			}
+			counterHeight += 0.5f;
+			counterLength = 0f;
+		}
+		
+
+
+		/*float spacer1 = 0f;
 		float spacer2 = 0f;
 		for (int i=0; i<gridLength; i++) {
 			for (int j=0; j<gridHeight; j++) {
@@ -99,8 +129,28 @@ public class Play : Game
 			
 						spacer2 += 0.45f;
 						spacer1 = 0.0f;
-			}
-		}*/
+			}*/
+		}
+	private GameObject randomGameTile(){
+		int random = Random.Range (0, 4);
+		GameObject gameTile;
+		switch (random) {
+		case 0:
+			gameTile = (GameObject)Instantiate (Resources.Load ("Prefab/RedTile"));
+			break;
+		case 1:
+			gameTile = (GameObject)Instantiate (Resources.Load ("Prefab/BlueTile"));
+			break;
+		case 2:
+			gameTile = (GameObject)Instantiate (Resources.Load ("Prefab/YellowTile"));
+			break;
+		default:
+			gameTile = (GameObject)Instantiate (Resources.Load ("Prefab/GreenTile"));
+			break;
+
+		}
+		return gameTile;
+	}
 	private void OnGUI(){
 
 				
