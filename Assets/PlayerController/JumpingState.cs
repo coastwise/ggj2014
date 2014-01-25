@@ -16,5 +16,12 @@ public class JumpingState : PlayerState {
 	override public void Throw () {
 		Debug.Log("Player " + player.joystick + " Jumping Throw");
 	}
+
+	override public void Stand(){
+		Debug.Log("Player " + player.joystick + " Standing");
+		player.EnterState(typeof(StandingState));
+	}
+
+
 	
 }

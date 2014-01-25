@@ -15,11 +15,11 @@ public class StandingState : PlayerState {
 	}
 
 	override public void Left () {
-		player.rigidbody2D.velocity -= Vector2.right * 1.2f;
+		player.rigidbody2D.velocity -= Vector2.right * 2.6f;
 	}
 
 	override public void Right () {
-		player.rigidbody2D.velocity += Vector2.right * 1.2f;
+		player.rigidbody2D.velocity += Vector2.right * 2.6f;
 	}
 	
 }

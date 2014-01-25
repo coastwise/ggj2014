@@ -25,7 +25,13 @@ public class PlayerController : MonoBehaviour {
 		currentState = states[newState];
 		currentState.OnEnter();
 	}
-	
+
+	void OnCollisionEnter2D(Collision2D coll){
+		if(coll.gameObject.tag == "floor"){
+			currentState.Stand();
+		}
+	}
+
 	void Update () {
 		// check my input and call state methods
 		if (Input.GetButtonDown("A_"+joystick)) {
