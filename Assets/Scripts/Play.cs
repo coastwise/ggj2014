@@ -23,6 +23,7 @@ public class Play : Game
 	//public List<Tile> grid = new List<Tile> ();
 	//Tile[,] grid = new Tile[gridLength,gridHeight];
 	GameObject[,] tiles = new GameObject[gridHeight,gridLength];
+	int[,] gameMap = new int[gridHeight,gridLength];
 	//public override void startSetup()
 	//{
 	//	Debug.Log("playSetup");
@@ -71,7 +72,9 @@ public class Play : Game
 			for(int j=0; j<gridLength; j++){
 			GameObject tileSquare;
 			Vector3 pos;
-			tileSquare = randomGameTile ();
+				int random = Random.Range (0, 4);
+				gameMap[i,j] = random;
+			tileSquare = randomGameTile (random);
 			pos = new Vector3 (posX+counterLength, posY+counterHeight, -500);
 			tileSquare.transform.position = pos;
 				tiles[i,j] = tileSquare;
@@ -131,8 +134,8 @@ public class Play : Game
 						spacer1 = 0.0f;
 			}*/
 		}
-	private GameObject randomGameTile(){
-		int random = Random.Range (0, 4);
+	private GameObject randomGameTile(int random){
+
 		GameObject gameTile;
 		switch (random) {
 		case 0:
