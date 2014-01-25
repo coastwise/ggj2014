@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour {
 		states.Add(typeof(JumpingState), new JumpingState(this));
 		states.Add(typeof(StompingState), new StompingState(this));
 		states.Add(typeof(FallingState), new FallingState(this));
+		states.Add(typeof(WallSlidingState), new WallSlidingState(this));
 
 		// enter the initial state
 		currentState = states[typeof(StandingState)];
@@ -32,8 +33,26 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D(Collision2D coll){
-		if(coll.gameObject.tag == "floor"){
-			currentState.HitFloor();
+
+		if(coll.gameObject.tag == "floor") {
+			bool wall = false;
+			bool floor = false;
+
+			foreach (ContactPoint2D contact in coll.contacts) {
+				//Debug.Log(name + " contact normal " + contact.normal);
+				if (contact.normal == Vector2.up) {
+					floor = true;
+				} else if (contact.normal == Vector2.right || contact.normal == -Vector2.right) {
+					wall = true;
+				}
+				Debug.Log(contact.normal);
+			}
+
+			if (floor) {
+				currentState.HitFloor();
+			} else if (wall) {
+				currentState.HitWall();
+			} // else ceiling
 		}
 
 		if (coll.gameObject.tag == "Player") {

@@ -32,6 +32,10 @@ public class JumpingState : PlayerState {
 		player.EnterState(typeof(StandingState));
 	}
 
+	override public void HitWall () {
+		player.EnterState(typeof(WallSlidingState));
+	}
+
 	public override void HitPlayer (Collision2D coll) {
 		// we don't care if we're on our way up
 		if (player.rigidbody2D.velocity.y > 0) return;
