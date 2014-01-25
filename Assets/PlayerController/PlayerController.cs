@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour {
 	// "is false when preceded by its quotation" is false when preceded by its quotation
 
 	void Start () {
+		name = "Player " + joystick;
+
 		// initialize states once (no gc)
 		states = new Dictionary<System.Type, PlayerState>();
 		states.Add(typeof(StandingState), new StandingState(this));
