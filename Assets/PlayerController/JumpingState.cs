@@ -6,7 +6,7 @@ public class JumpingState : PlayerState {
 	public JumpingState (PlayerController player) : base (player) {}
 
 	public override void OnEnter () {
-		player.gameObject.rigidbody2D.velocity += Vector2.up * 10;
+		player.gameObject.rigidbody2D.velocity += Vector2.up * player.instantaneousJumpVelocity;
 	}
 	
 	override public void Jump () {
@@ -18,12 +18,14 @@ public class JumpingState : PlayerState {
 	}
 
 	override public void Left () {
-		float vx = Mathf.Clamp(player.rigidbody2D.velocity.x - 0.3f, -16, 16);
+		float vx = player.rigidbody2D.velocity.x - player.horizontalAirAcceleration;
+		vx = Mathf.Clamp(vx, -player.maxAirHorizontalVelocity, player.maxAirHorizontalVelocity);
 		player.rigidbody2D.velocity = new Vector2(vx, player.rigidbody2D.velocity.y);
 	}
 	
 	override public void Right () {
-		float vx = Mathf.Clamp(player.rigidbody2D.velocity.x + 0.3f, -16, 16);
+		float vx = player.rigidbody2D.velocity.x + player.horizontalAirAcceleration;
+		vx = Mathf.Clamp(vx, -player.maxAirHorizontalVelocity, player.maxAirHorizontalVelocity);
 		player.rigidbody2D.velocity = new Vector2(vx, player.rigidbody2D.velocity.y);
 	}
 

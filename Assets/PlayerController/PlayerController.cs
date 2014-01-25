@@ -9,6 +9,10 @@ public class PlayerController : MonoBehaviour {
 	public float groundAcceleration = 2.6f;
 	public float maxGroundVelocity = 16f;
 
+	public float instantaneousJumpVelocity = 10f;
+	public float horizontalAirAcceleration = 0.3f;
+	public float maxAirHorizontalVelocity = 16f;
+
 	private bool _wallRight;
 	public bool wallRight {
 		get; private set;
