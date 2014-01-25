@@ -29,5 +29,17 @@ public class JumpingState : PlayerState {
 		Debug.Log("Player " + player.joystick + " Landed");
 		player.EnterState(typeof(StandingState));
 	}
+
+	public override void HitPlayer (Collision2D coll) {
+		// we don't care if we're on our way up
+		if (player.rigidbody2D.velocity.y > 0) return;
+
+		float deltaY = player.transform.position.y - coll.transform.position.y;
+		Debug.Log("delta y " + deltaY);
+		if (deltaY > 0.5f) {
+			//coll.gameObject.GetComponent<PlayerController>();
+			Debug.Log(player.name + " stomped " + coll.gameObject.name);
+		}
+	}
 	
 }

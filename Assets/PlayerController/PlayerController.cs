@@ -30,6 +30,10 @@ public class PlayerController : MonoBehaviour {
 		if(coll.gameObject.tag == "floor"){
 			currentState.HitFloor();
 		}
+
+		if (coll.gameObject.tag == "Player") {
+			currentState.HitPlayer(coll);
+		}
 	}
 
 	void Update () {

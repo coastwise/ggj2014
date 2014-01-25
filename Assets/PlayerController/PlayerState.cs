@@ -19,6 +19,7 @@ public class PlayerState {
 	virtual public void Right () {}
 
 	virtual public void HitFloor () {}
+	virtual public void HitPlayer (Collision2D coll) {}
 
 	virtual public void Update () {}
 
