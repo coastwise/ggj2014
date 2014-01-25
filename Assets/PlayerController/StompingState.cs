@@ -5,19 +5,26 @@ public class StompingState : StandingState {
 
 	public StompingState (PlayerController player) : base (player) {}
 
+	float countdown;
+
 	override public void Jump () {
 		Debug.Log("Player " + player.joystick + " Stomping Jump");
 		player.EnterState(typeof(JumpingState));
 	}
 
 	override public void OnEnter () {
-		Debug.Log("stomping");
-		player.StartCoroutine(WaitThenFall());
+		countdown = 0.2f; // seconds
 	}
 
-	private IEnumerator WaitThenFall () {
-		yield return new WaitForSeconds(0.2f);
-		player.EnterState(typeof(FallingState));
+	override public void HitFloor(){
+		player.EnterState(typeof(StandingState));
+	}
+
+	override public void Update () {
+		countdown -= Time.deltaTime;
+		if (countdown < 0) {
+			player.EnterState(typeof(FallingState));
+		}
 	}
 
 }
