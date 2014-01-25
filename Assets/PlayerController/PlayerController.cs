@@ -27,5 +27,12 @@ public class PlayerController : MonoBehaviour {
 	
 	void Update () {
 		// check my input and call state methods
+		if (Input.GetButtonDown("A_"+joystick)) {
+			currentState.Jump();
+		}
+
+		if (Input.GetButtonDown("X_"+joystick)) {
+			currentState.Throw();
+		}
 	}
 }
