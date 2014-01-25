@@ -13,7 +13,7 @@ public class StompingState : StandingState {
 	}
 
 	override public void OnEnter () {
-		countdown = 0.2f; // seconds
+		countdown = player.stompingJumpTimeout; // seconds
 	}
 
 	override public void HitFloor(){

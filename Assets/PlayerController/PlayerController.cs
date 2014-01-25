@@ -13,6 +13,10 @@ public class PlayerController : MonoBehaviour {
 	public float horizontalAirAcceleration = 0.3f;
 	public float maxAirHorizontalVelocity = 16f;
 
+	public float stompingJumpTimeout = 0.2f; // seconds
+
+	public Vector2 wallJumpInstantaneousVelocityDir = Vector2.one * 10f;
+
 	private bool _wallRight;
 	public bool wallRight {
 		get; private set;

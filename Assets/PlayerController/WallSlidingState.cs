@@ -8,7 +8,7 @@ public class WallSlidingState : FallingState {
 	public WallSlidingState (PlayerController c) : base (c) {}
 
 	override public void Jump () {
-		Vector2 jump = Vector2.one * 10f;
+		Vector2 jump = player.wallJumpInstantaneousVelocityDir;
 		if (player.wallRight) {
 			jump = new Vector2(jump.x * -1, jump.y);
 		}
