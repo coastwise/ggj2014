@@ -6,7 +6,10 @@ public class PlayerController : MonoBehaviour {
 
 	public int joystick;
 
-	public bool wallRight;
+	private bool _wallRight;
+	public bool wallRight {
+		get; private set;
+	}
 
 	private Dictionary<System.Type, PlayerState> states;
 	private PlayerState currentState;
