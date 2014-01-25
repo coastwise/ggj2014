@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour {
 		// initialize states once (no gc)
 		states = new Dictionary<System.Type, PlayerState>();
 		states.Add(typeof(StandingState), new StandingState(this));
+		states.Add(typeof(JumpingState), new JumpingState(this));
 
 		// enter the initial state
 		currentState = states[typeof(StandingState)];

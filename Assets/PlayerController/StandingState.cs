@@ -7,6 +7,7 @@ public class StandingState : PlayerState {
 
 	override public void Jump () {
 		Debug.Log("Player " + player.joystick + " Standing Jump");
+		player.EnterState(typeof(JumpingState));
 	}
 
 	override public void Throw () {
