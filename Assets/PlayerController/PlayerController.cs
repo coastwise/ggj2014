@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public void EnterState (System.Type newState) {
+		Debug.Log("Player " + joystick + " transitioning from " + currentState.GetType() + " to " + newState);
 		currentState.OnExit();
 		currentState = states[newState];
 		currentState.OnEnter();
