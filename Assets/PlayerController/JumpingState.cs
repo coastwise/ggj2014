@@ -18,11 +18,13 @@ public class JumpingState : PlayerState {
 	}
 
 	override public void Left () {
-		player.rigidbody2D.velocity -= Vector2.right * 0.3f;
+		float vx = Mathf.Clamp(player.rigidbody2D.velocity.x - 0.3f, -16, 16);
+		player.rigidbody2D.velocity = new Vector2(vx, player.rigidbody2D.velocity.y);
 	}
 	
 	override public void Right () {
-		player.rigidbody2D.velocity += Vector2.right * 0.3f;
+		float vx = Mathf.Clamp(player.rigidbody2D.velocity.x + 0.3f, -16, 16);
+		player.rigidbody2D.velocity = new Vector2(vx, player.rigidbody2D.velocity.y);
 	}
 
 	override public void HitFloor(){

@@ -15,11 +15,13 @@ public class StandingState : PlayerState {
 	}
 
 	override public void Left () {
-		player.rigidbody2D.velocity -= Vector2.right * 2.6f;
+		float vx = Mathf.Clamp(player.rigidbody2D.velocity.x - 2.6f, -16, 16);
+		player.rigidbody2D.velocity = new Vector2(vx, player.rigidbody2D.velocity.y);
 	}
 
 	override public void Right () {
-		player.rigidbody2D.velocity += Vector2.right * 2.6f;
+		float vx = Mathf.Clamp(player.rigidbody2D.velocity.x + 2.6f, -16, 16);
+		player.rigidbody2D.velocity = new Vector2(vx, player.rigidbody2D.velocity.y);
 	}
 	
 }
