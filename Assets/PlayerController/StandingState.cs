@@ -5,6 +5,12 @@ public class StandingState : PlayerState {
 
 	public StandingState (PlayerController player) : base (player) {}
 
+	public override void OnEnter ()
+	{
+		Animator animator = player.GetComponent<Animator>();
+		animator.Play("RoboStand");
+	}
+
 	override public void Jump () {
 		Debug.Log("Player " + player.joystick + " Standing Jump");
 		player.EnterState(typeof(JumpingState));
@@ -18,12 +24,18 @@ public class StandingState : PlayerState {
 		float vx = player.rigidbody2D.velocity.x - player.groundAcceleration;
 		vx = Mathf.Clamp(vx, -player.maxGroundVelocity, player.maxGroundVelocity);
 		player.rigidbody2D.velocity = new Vector2(vx, player.rigidbody2D.velocity.y);
+
+		Animator animator = player.GetComponent<Animator>();
+		animator.Play("RoboRun");
 	}
 
 	override public void Right () {
 		float vx = player.rigidbody2D.velocity.x + player.groundAcceleration;
 		vx = Mathf.Clamp(vx, -player.maxGroundVelocity, player.maxGroundVelocity);
 		player.rigidbody2D.velocity = new Vector2(vx, player.rigidbody2D.velocity.y);
+
+		Animator animator = player.GetComponent<Animator>();
+		animator.Play("RoboRun");
 	}
 	
 }
