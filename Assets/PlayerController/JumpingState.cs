@@ -22,6 +22,14 @@ public class JumpingState : PlayerState {
 		player.EnterState(typeof(StandingState));
 	}
 
+	override public void Left () {
+		player.rigidbody2D.velocity -= Vector2.right * 0.3f;
+	}
+	
+	override public void Right () {
+		player.rigidbody2D.velocity += Vector2.right * 0.3f;
+	}
+
 
 	
 }
