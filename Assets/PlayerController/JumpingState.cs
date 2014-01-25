@@ -17,11 +17,6 @@ public class JumpingState : PlayerState {
 		Debug.Log("Player " + player.joystick + " Jumping Throw");
 	}
 
-	override public void Stand(){
-		Debug.Log("Player " + player.joystick + " Standing");
-		player.EnterState(typeof(StandingState));
-	}
-
 	override public void Left () {
 		player.rigidbody2D.velocity -= Vector2.right * 0.3f;
 	}
@@ -30,6 +25,9 @@ public class JumpingState : PlayerState {
 		player.rigidbody2D.velocity += Vector2.right * 0.3f;
 	}
 
-
+	override public void HitFloor(){
+		Debug.Log("Player " + player.joystick + " Landed");
+		player.EnterState(typeof(StandingState));
+	}
 	
 }

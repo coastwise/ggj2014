@@ -18,7 +18,7 @@ public class PlayerState {
 	virtual public void Left () {}
 	virtual public void Right () {}
 
-	virtual public void Stand () {}
+	virtual public void HitFloor () {}
 
 	virtual public void Update () {}
 

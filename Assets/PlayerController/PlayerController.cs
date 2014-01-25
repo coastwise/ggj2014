@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D coll){
 		if(coll.gameObject.tag == "floor"){
-			currentState.Stand();
+			currentState.HitFloor();
 		}
 	}
 
