@@ -6,6 +6,8 @@ public class PlayerController : MonoBehaviour {
 
 	public int joystick;
 
+	public bool wallRight;
+
 	private Dictionary<System.Type, PlayerState> states;
 	private PlayerState currentState;
 
@@ -45,6 +47,7 @@ public class PlayerController : MonoBehaviour {
 				if (contact.normal == Vector2.up) {
 					floor = true;
 				} else if (contact.normal == Vector2.right || contact.normal == -Vector2.right) {
+					wallRight = contact.normal != Vector2.right;
 					wall = true;
 				}
 			}

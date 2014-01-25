@@ -3,10 +3,19 @@ using System.Collections;
 
 public class WallSlidingState : FallingState {
 
+	public bool right;
+
 	public WallSlidingState (PlayerController c) : base (c) {}
 
 	override public void Jump () {
-		Debug.Log("WallJump!");
+		Vector2 jump = Vector2.one * 10f;
+		if (player.wallRight) {
+			jump = new Vector2(jump.x * -1, jump.y);
+		}
+
+		player.gameObject.rigidbody2D.velocity += jump;
+
+		player.EnterState(typeof(FallingState));
 	}
 
 }
