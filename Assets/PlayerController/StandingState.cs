@@ -3,6 +3,8 @@ using System.Collections;
 
 public class StandingState : PlayerState {
 
+	public StandingState (PlayerController player) : base (player) {}
+
 	virtual public void Jump () {
 		Debug.Log(player.joystick + " Standing Jump");
 	}
