@@ -20,9 +20,11 @@ public class Play : Game
 	public bool finishPressed = false;
 	public bool playDisplayed = false;
 
+	public bool switchTransition = true;
+
 	//public List<Tile> grid = new List<Tile> ();
 	//Tile[,] grid = new Tile[gridLength,gridHeight];
-	GameObject[,] tiles = new GameObject[gridHeight,gridLength];
+	List <GameObject> tiles = new List<GameObject>();
 	int[,] gameMap = new int[gridHeight,gridLength];
 	//public override void startSetup()
 	//{
@@ -51,15 +53,51 @@ public class Play : Game
 			}
 		}
 	}*/
+	public void clearGrid(){//figure out how to destroy grid tiles
+
+				foreach (GameObject tile in tiles) {
+						Destroy (tile);
+				}
+		}
+	private void startSwitchTransition(){
+		Debug.Log ("transition");
+		clearGrid ();
+
+	}
 	private void switchColours()
 	{
+		//clearGrid ();
 		Debug.Log ("test");
+		for (int i=0; i<gridHeight; i++) {
+			for(int j=0; j<gridLength; j++){
+				gameMap[i,j]++;
+				if(gameMap[i,j]==4)
+					gameMap[i,j]= 0;
+			}
+		}
+		displayGrid ();
 	}
 	public IEnumerator switchColoursTimer() {
 		while(true)
 		{
+			if(switchTransition){
 			switchColours();
+				switchTransition = false;
 			yield return new WaitForSeconds(3);
+			}
+			else{
+				startSwitchTransition();
+				switchTransition = true;
+				yield return new WaitForSeconds(3);
+			}
+		}
+	}
+	public void randomGrid(){
+		for (int i=0; i<gridHeight; i++) {
+			for (int j=0; j<gridLength; j++){
+				int random = Random.Range (0, 4);
+				gameMap[i,j] = random;
+			}
 		}
 	}
 	public void displayGrid(){
@@ -72,12 +110,13 @@ public class Play : Game
 			for(int j=0; j<gridLength; j++){
 			GameObject tileSquare;
 			Vector3 pos;
-				int random = Random.Range (0, 4);
-				gameMap[i,j] = random;
-			tileSquare = randomGameTile (random);
+				//int random = Random.Range (0, 4);
+				//gameMap[i,j] = random;
+
+			tileSquare = getGameTile (gameMap[i,j]);
 			pos = new Vector3 (posX+counterLength, posY+counterHeight, -500);
 			tileSquare.transform.position = pos;
-				tiles[i,j] = tileSquare;
+				tiles.Add ( tileSquare);
 			counterLength += 0.5f;
 			}
 			counterHeight += 0.5f;
@@ -134,7 +173,7 @@ public class Play : Game
 						spacer1 = 0.0f;
 			}*/
 		}
-	private GameObject randomGameTile(int random){
+	private GameObject getGameTile(int random){
 
 		GameObject gameTile;
 		switch (random) {
