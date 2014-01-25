@@ -13,5 +13,13 @@ public class StandingState : PlayerState {
 	override public void Throw () {
 		Debug.Log("Player " + player.joystick + " Standing Throw");
 	}
+
+	override public void Left () {
+		player.rigidbody2D.velocity -= Vector2.right * 1;
+	}
+
+	override public void Right () {
+		player.rigidbody2D.velocity += Vector2.right * 1;
+	}
 	
 }

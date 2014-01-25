@@ -35,5 +35,12 @@ public class PlayerController : MonoBehaviour {
 		if (Input.GetButtonDown("X_"+joystick)) {
 			currentState.Throw();
 		}
+
+		if (Input.GetAxis("L_XAxis_"+joystick) > 0) {
+			currentState.Right();
+		} else if (Input.GetAxis("L_XAxis_"+joystick) < 0) {
+			currentState.Left();
+		}
+
 	}
 }

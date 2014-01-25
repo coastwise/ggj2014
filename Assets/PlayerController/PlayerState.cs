@@ -15,4 +15,7 @@ public class PlayerState {
 	virtual public void Jump () {}
 	virtual public void Throw () {}
 
+	virtual public void Left () {}
+	virtual public void Right () {}
+
 }
