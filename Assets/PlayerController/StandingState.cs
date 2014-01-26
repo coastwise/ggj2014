@@ -26,7 +26,7 @@ public class StandingState : PlayerState {
 		vx = Mathf.Clamp(vx, -player.maxGroundVelocity, player.maxGroundVelocity);
 		player.rigidbody2D.velocity = new Vector2(vx, player.rigidbody2D.velocity.y);
 
-		player.transform.localScale = new Vector3(1,1,1);
+		player.transform.localScale = new Vector3(-1,1,1);
 
 		if (isIdle) player.GetComponent<Animator>().SetTrigger("WalkToRun");
 		isIdle = false;
@@ -37,7 +37,7 @@ public class StandingState : PlayerState {
 		vx = Mathf.Clamp(vx, -player.maxGroundVelocity, player.maxGroundVelocity);
 		player.rigidbody2D.velocity = new Vector2(vx, player.rigidbody2D.velocity.y);
 
-		player.transform.localScale = new Vector3(-1,1,1);
+		player.transform.localScale = new Vector3(1,1,1);
 		
 		if (isIdle) player.GetComponent<Animator>().SetTrigger("WalkToRun");
 		isIdle = false;
