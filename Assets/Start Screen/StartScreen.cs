@@ -40,14 +40,14 @@ public class StartScreen : MonoBehaviour {
 	}
 
 	void StartScreenAnimation () {
-		if ( !menu.isPlaying && Input.GetButtonDown("Start_1") || Input.GetButtonDown("Start_2") || Input.GetButtonDown("Start_3") || Input.GetButtonDown("Start_4")) {
+		if ( !menu.isPlaying || Input.GetButtonDown("Start_1") || Input.GetButtonDown("Start_2") || Input.GetButtonDown("Start_3") || Input.GetButtonDown("Start_4")) {
 			menu["Slide Background"].time = 1000;
 			state = StartScreenCheckForTheStartButton;
 		}
 	}
 
 	void StartScreenCheckForTheStartButton () {
-		if ( !menu.isPlaying && Input.GetButtonDown("Start_1") || Input.GetButtonDown("Start_2") || Input.GetButtonDown("Start_3") || Input.GetButtonDown("Start_4")) {
+		if (Input.GetButtonDown("Start_1") || Input.GetButtonDown("Start_2") || Input.GetButtonDown("Start_3") || Input.GetButtonDown("Start_4")) {
 			menu.Play ("Zoom Fade");
 
 			state = StartScreenExiting;
@@ -62,7 +62,7 @@ public class StartScreen : MonoBehaviour {
 
 	IEnumerator LoadCharacterSelectCoroutine () {
 		yield return new WaitForSeconds(1);
-
+		Application.LoadLevel("Character Select");
 		// Load Character Select Scene
 	}
 }
