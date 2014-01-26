@@ -16,6 +16,7 @@ public class WallSlidingState : FallingState {
 		player.gameObject.rigidbody2D.velocity += jump;
 
 		player.EnterState(typeof(FallingState));
+		player.GetComponent<Animator>().SetTrigger("Jump");
 	}
 
 }

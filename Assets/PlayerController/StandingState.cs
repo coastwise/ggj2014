@@ -28,7 +28,7 @@ public class StandingState : PlayerState {
 
 		player.transform.localScale = new Vector3(1,1,1);
 
-		if (isIdle) player.GetComponent<Animator>().Play("RoboRun");
+		if (isIdle) player.GetComponent<Animator>().SetTrigger("WalkToRun");
 		isIdle = false;
 	}
 
@@ -39,12 +39,12 @@ public class StandingState : PlayerState {
 
 		player.transform.localScale = new Vector3(-1,1,1);
 		
-		if (isIdle) player.GetComponent<Animator>().Play("RoboRun");
+		if (isIdle) player.GetComponent<Animator>().SetTrigger("WalkToRun");
 		isIdle = false;
 	}
 
 	override public void Idle () {
-		if (!isIdle) player.GetComponent<Animator>().Play("RoboStand");
+		if (!isIdle) player.GetComponent<Animator>().SetTrigger("RunToWalk");
 		isIdle = true;
 	}
 	
