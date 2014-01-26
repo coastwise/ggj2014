@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour {
 
 	public float stompingJumpTimeout = 0.2f; // seconds
 
+	public float respawnTimeout = 2f; // seconds
+
 	public Vector2 wallJumpInstantaneousVelocityDir = Vector2.one * 10f;
 
 	private bool _wallRight;
@@ -37,6 +39,7 @@ public class PlayerController : MonoBehaviour {
 		states.Add(typeof(StompingState), new StompingState(this));
 		states.Add(typeof(FallingState), new FallingState(this));
 		states.Add(typeof(WallSlidingState), new WallSlidingState(this));
+		states.Add(typeof(DyingState), new DyingState(this));
 
 		// enter the initial state
 		currentState = states[typeof(StandingState)];
