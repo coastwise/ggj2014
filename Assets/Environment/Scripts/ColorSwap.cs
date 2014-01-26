@@ -58,10 +58,10 @@ public class ColorSwap : MonoBehaviour {
 			} else if (tileColors[i] > 12) {
 				tiles[i].transform.parent.gameObject.layer = LayerMask.NameToLayer("yellow terrain");
 				tiles[i].transform.gameObject.layer = LayerMask.NameToLayer("yellow terrain");
-			} if (tileColors[i] > 8) {
+			} else if (tileColors[i] > 8) {
 				tiles[i].transform.parent.gameObject.layer = LayerMask.NameToLayer("blue terrain");
 				tiles[i].transform.gameObject.layer = LayerMask.NameToLayer("blue terrain");
-			} if (tileColors[i] > 4) {
+			} else if (tileColors[i] > 4) {
 				tiles[i].transform.parent.gameObject.layer = LayerMask.NameToLayer("green terrain");
 				tiles[i].transform.gameObject.layer = LayerMask.NameToLayer("green terrain");
 			} 
