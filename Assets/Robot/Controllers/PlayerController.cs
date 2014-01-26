@@ -94,12 +94,24 @@ public class PlayerController : MonoBehaviour {
 		// check my input and call state methods
 		if (Input.GetButtonDown("X_"+joystick) && _fireableBoomerangs > 0)
 		{
-			Vector3 projectileDirection = new Vector3(Input.GetAxis("L_XAxis_"+joystick), -Input.GetAxis("L_YAxis_"+joystick), 0.0f).normalized;
-			float offset = 1.0f;
-			if (Input.GetAxis("L_XAxis_"+joystick) > 0.98f)
-				offset = 0.5f;
+			float xAxis = Input.GetAxis("L_XAxis_"+joystick);
+			if (xAxis > 0.0f)
+				xAxis = 1.0f;
+			else if (xAxis < 0.0f)
+				xAxis = -1.0f;
+
+			float yAxis = Input.GetAxis("L_YAxis_"+joystick);
+			if (yAxis > 0.0f)
+				yAxis = 1.0f;
+			else if (yAxis < 0.0f)
+				yAxis = -1.0f;
+
+			Vector3 projectileDirection = new Vector3(xAxis, -yAxis, 0.0f).normalized;
 			if (projectileDirection != Vector3.zero)
 			{
+				float offset = 0.8f;
+				if (yAxis == 0.0f)
+					offset = 0.5f;
 				GameObject boomerang = (GameObject)Instantiate(_boomerangPrefab, transform.position + (projectileDirection * offset), Quaternion.identity);
 				boomerang.GetComponent<BoomerangController>().CreateBoomerang(this.gameObject, projectileDirection);
 				_fireableBoomerangs -= 1;
