@@ -94,18 +94,14 @@ public class PlayerController : MonoBehaviour {
 		// check my input and call state methods
 		if (Input.GetButtonDown("X_"+joystick) && _fireableBoomerangs > 0)
 		{
-			//GameObject boomerang = (GameObject)Instantiate(_boomerangPrefab, transform.position, Quaternion.identity);
-
-			if (Input.GetAxis("L_XAxis_"+joystick) > 0)
+			Vector3 projectileDirection = new Vector3(Input.GetAxis("L_XAxis_"+joystick), -Input.GetAxis("L_YAxis_"+joystick), 0.0f).normalized;
+			float offset = 1.0f;
+			if (Input.GetAxis("L_XAxis_"+joystick) > 0.98f)
+				offset = 0.5f;
+			if (projectileDirection != Vector3.zero)
 			{
-				GameObject boomerang = (GameObject)Instantiate(_boomerangPrefab, transform.position + Vector3.right, Quaternion.identity);
-				boomerang.GetComponent<BoomerangController>().CreateBoomerang(this.gameObject, Vector3.right);
-				_fireableBoomerangs -= 1;
-			}
-			else if (Input.GetAxis("L_XAxis_"+joystick) < 0)
-			{
-				GameObject boomerang = (GameObject)Instantiate(_boomerangPrefab, transform.position + Vector3.left, Quaternion.identity);
-				boomerang.GetComponent<BoomerangController>().CreateBoomerang(this.gameObject, Vector3.left);
+				GameObject boomerang = (GameObject)Instantiate(_boomerangPrefab, transform.position + (projectileDirection * offset), Quaternion.identity);
+				boomerang.GetComponent<BoomerangController>().CreateBoomerang(this.gameObject, projectileDirection);
 				_fireableBoomerangs -= 1;
 			}
 		}

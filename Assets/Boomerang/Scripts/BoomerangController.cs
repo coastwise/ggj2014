@@ -18,7 +18,7 @@ public class BoomerangController : MonoBehaviour
 		_owner = parent;
 		this.gameObject.layer = parent.layer; /* red weapon layer is 4 higher than red player */
 		_direction = direction;
-		rigidbody2D.gravityScale = 0.0f;
+		rigidbody2D.gravityScale = 0.005f;
 		_spawnTime = Time.time;
 		_returning = false;
 		_isActive = true;
@@ -31,8 +31,9 @@ public class BoomerangController : MonoBehaviour
 		transform.Rotate(_rotation * Time.deltaTime);
 		if (!_returning)
 		{
-			float sin = Mathf.Sin(((Time.time - _spawnTime) * 3.0f) + Mathf.Deg2Rad * 90.0f);
+			float sin = Mathf.Sin(((Time.time - _spawnTime) * 4.0f) + Mathf.Deg2Rad * 90.0f);
 			transform.Translate(_direction * sin * Time.deltaTime * 24.0f, Space.World);
+			Debug.Log(_direction);
 			if (sin <= 0)
 				_returning = true;
 		}
