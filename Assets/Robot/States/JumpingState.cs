@@ -9,6 +9,8 @@ public class JumpingState : PlayerState {
 
 		player.gameObject.rigidbody2D.velocity += Vector2.up * player.instantaneousJumpVelocity;
 		player.GetComponent<Animator>().SetTrigger("Jump");
+
+		player.gameObject.audio.PlayOneShot(player.jumpSound);
 	}
 	
 	override public void Jump () {

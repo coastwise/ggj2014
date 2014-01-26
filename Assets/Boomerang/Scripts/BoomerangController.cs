@@ -13,6 +13,8 @@ public class BoomerangController : MonoBehaviour
 
 	private float _spawnTime;
 
+	public AudioClip hitSound;
+
 	public void CreateBoomerang(GameObject parent, Vector3 direction)
 	{
 		_owner = parent;
@@ -60,5 +62,6 @@ public class BoomerangController : MonoBehaviour
 			rigidbody2D.gravityScale = 0.1f;
 			_isActive = false;
 		}
+		gameObject.audio.PlayOneShot(hitSound);
 	}
 }
