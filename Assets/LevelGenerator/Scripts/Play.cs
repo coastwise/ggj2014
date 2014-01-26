@@ -127,7 +127,8 @@ public class Play : Game
 				//gameMap[i,j] = random;
 		
 			
-			tiles[i,j].GetComponent<SpriteRenderer>().sprite = getSpriteRenderer (gameMap[i,j], Random.Range (0,4));
+				tiles[i,j].GetComponent<SpriteRenderer>().sprite = getSpriteRenderer (gameMap[i,j], Random.Range (0,4));
+				tiles[i,j].name = tiles[i,j].GetComponent<SpriteRenderer>().sprite.name;
 			
 			}
 		}
