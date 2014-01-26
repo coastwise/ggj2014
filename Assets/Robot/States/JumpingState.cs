@@ -5,7 +5,8 @@ public class JumpingState : PlayerState {
 	
 	public JumpingState (PlayerController player) : base (player) {}
 
-	public override void OnEnter () {
+	public override void OnEnter () { 
+
 		player.gameObject.rigidbody2D.velocity += Vector2.up * player.instantaneousJumpVelocity;
 		player.GetComponent<Animator>().SetTrigger("Jump");
 	}

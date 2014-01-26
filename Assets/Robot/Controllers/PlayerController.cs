@@ -6,6 +6,8 @@ public class PlayerController : MonoBehaviour {
 
 	public int joystick;
 
+	//public int color;
+
 	public float groundAcceleration = 2.6f;
 	public float maxGroundVelocity = 16f;
 
@@ -66,9 +68,13 @@ public class PlayerController : MonoBehaviour {
 				//Debug.Log(name + " contact normal " + contact.normal);
 				if (contact.normal == Vector2.up) {
 					floor = true;
-				} else if (contact.normal == Vector2.right || contact.normal == -Vector2.right) {
+				} 
+				else if (contact.normal == Vector2.right || contact.normal == -Vector2.right) {
 					wallRight = contact.normal != Vector2.right;
 					wall = true;
+				}
+				else{
+					currentState.Idle();
 				}
 			}
 
