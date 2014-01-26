@@ -7,6 +7,7 @@ public class JumpingState : PlayerState {
 
 	public override void OnEnter () {
 		player.gameObject.rigidbody2D.velocity += Vector2.up * player.instantaneousJumpVelocity;
+		player.GetComponent<Animator>().Play("RoboStand");
 	}
 	
 	override public void Jump () {

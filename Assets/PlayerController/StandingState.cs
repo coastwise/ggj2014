@@ -5,10 +5,11 @@ public class StandingState : PlayerState {
 
 	public StandingState (PlayerController player) : base (player) {}
 
+	private bool isIdle = true;
+
 	public override void OnEnter ()
 	{
 		Animator animator = player.GetComponent<Animator>();
-		animator.Play("RoboStand");
 	}
 
 	override public void Jump () {
@@ -25,8 +26,8 @@ public class StandingState : PlayerState {
 		vx = Mathf.Clamp(vx, -player.maxGroundVelocity, player.maxGroundVelocity);
 		player.rigidbody2D.velocity = new Vector2(vx, player.rigidbody2D.velocity.y);
 
-		Animator animator = player.GetComponent<Animator>();
-		animator.Play("RoboRun");
+		if (isIdle) player.GetComponent<Animator>().Play("RoboRun");
+		isIdle = false;
 	}
 
 	override public void Right () {
@@ -34,8 +35,13 @@ public class StandingState : PlayerState {
 		vx = Mathf.Clamp(vx, -player.maxGroundVelocity, player.maxGroundVelocity);
 		player.rigidbody2D.velocity = new Vector2(vx, player.rigidbody2D.velocity.y);
 
-		Animator animator = player.GetComponent<Animator>();
-		animator.Play("RoboRun");
+		if (isIdle) player.GetComponent<Animator>().Play("RoboRun");
+		isIdle = false;
+	}
+
+	override public void Idle () {
+		if (!isIdle) player.GetComponent<Animator>().Play("RoboStand");
+		isIdle = true;
 	}
 	
 }

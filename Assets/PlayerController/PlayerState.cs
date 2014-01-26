@@ -17,6 +17,7 @@ public class PlayerState {
 
 	virtual public void Left () {}
 	virtual public void Right () {}
+	virtual public void Idle () {}
 
 	virtual public void HitFloor () {}
 	virtual public void HitWall () {}
