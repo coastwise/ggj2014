@@ -12,7 +12,13 @@ public class JumpingState : PlayerState {
 	}
 	
 	override public void Jump () {
-		Debug.Log("Player " + player.joystick + " Jumping Jump");
+		//Debug.Log("Player " + player.joystick + " Jumping Jump");
+		if (player._canDoublejump)
+		{
+			player._canDoublejump = false;
+			player.SpawnDoublejumpExplosion();
+			player.EnterState(typeof(JumpingState));
+		}
 	}
 	
 	override public void Throw () {
