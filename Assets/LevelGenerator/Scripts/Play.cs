@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+
 
 public class Play : Game 
 {
@@ -21,55 +23,23 @@ public class Play : Game
 	public bool playDisplayed = false;
 
 	public bool switchTransition = true;
-
-	//public List<Tile> grid = new List<Tile> ();
-	//Tile[,] grid = new Tile[gridLength,gridHeight];
+	
 	List <GameObject> tiles = new List<GameObject>();
 	int[,] gameMap = new int[gridHeight,gridLength];
-	//public override void startSetup()
-	//{
-	//	Debug.Log("playSetup");
-		//createTiles ();
-		//dealTiles ();
 
 
-		/*
-		 * //Place Prefab
-		GameObject grassland = (GameObject)Instantiate(Resources.Load("Grassland"));
-		Vector3 testPosition = new Vector3 (0, 0, 0);
-		grassland.transform.position = testPosition;
-		*/
-
-	//}
-	/*public void createTiles(){
-
-		int[,] mazeData = Setup.Instance.getMazeData ();
-		for(int i=0; i<gridLength; i++)
-		{
-			for(int j=0; j<gridHeight; j++)
-			{
-				Tile t = new Tile(i,j,mazeData[i,j]);
-				grid[i,j] = t;
-			}
-		}
-	}*/
-	public void clearGrid(){//figure out how to destroy grid tiles
-
-				foreach (GameObject tile in tiles) {
+	public void clearGrid(){
+		foreach (GameObject tile in tiles) {
 						Destroy (tile);
-				}
 		}
+	}
 	private void startSwitchTransition(){
-		Debug.Log ("transition");
 		clearGrid ();
 		displayGrid (2);
-
-
 	}
 	private void switchColours()
 	{
 		clearGrid ();
-		Debug.Log ("test");
 		for (int i=0; i<gridHeight; i++) {
 			for(int j=0; j<gridLength; j++){
 				gameMap[i,j]++;
@@ -104,98 +74,44 @@ public class Play : Game
 		}
 	}
 	public void displayGrid(int toggle){
-
 		float counterLength = 0f;
 		float counterHeight = 0f;
 		float posX = -7.25f;
 		float posY = -3.75f;
 		for (int i=0; i<gridHeight; i++) {
-			for(int j=0; j<gridLength; j++){
-			GameObject tileSquare;
-			Vector3 pos;
-				//int random = Random.Range (0, 4);
-				//gameMap[i,j] = random;
-			if(toggle == 1){
-			tileSquare = getGameTile(gameMap[i,j]);
-			}
-			else{
-					Debug.Log ("square: " + gameMap[i,j]);
-				if(gameMap[i,j] == 0){
-						tileSquare = getGameTile (4);
-					}
-				else if(gameMap[i,j] == 1){
-							tileSquare = getGameTile (5);
-					}
-				else if(gameMap[i,j] == 2){
-						tileSquare = getGameTile (6);
-					}
-				else{
-						tileSquare = getGameTile(7);
-					}
-			}
-			pos = new Vector3 (posX+counterLength, posY+counterHeight, -500);
-			tileSquare.transform.position = pos;
-				tiles.Add ( tileSquare);
-			counterLength += 0.5f;
-			}
-			counterHeight += 0.5f;
-			counterLength = 0f;
-		}
-		
-
-
-		/*float spacer1 = 0f;
-		float spacer2 = 0f;
-		for (int i=0; i<gridLength; i++) {
-			for (int j=0; j<gridHeight; j++) {
-				GameObject tile;
+			for (int j=0; j<gridLength; j++) {
+				GameObject tileSquare;
 				Vector3 pos;
-				Debug.Log ("cost: " + grid[i,j].cost);
-				switch(grid[i,j].cost){
 
-				case 0:
-					tile = (GameObject)Instantiate (Resources.Load ("Prefabs/OpenSpace"));
-					//pos = new Vector3 ((grid [i, j].point.x - spacer2) - 2, (grid [i, j].point.y - spacer1) - 3, 0);
-					//tile.transform.position = pos;
-					//tiles.Add(tile);
-					break;
-					case 1:
-					tile = (GameObject)Instantiate (Resources.Load ("Prefabs/Swamp"));
-
-					break;
-				case 2:
-					tile = (GameObject)Instantiate (Resources.Load ("Prefabs/Grassland"));
-				
-					break;
-					case 3:
-					tile = (GameObject)Instantiate (Resources.Load ("Prefabs/Obstacle"));
-			
-					break;	
-				case 4:
-					tile = (GameObject)Instantiate (Resources.Load ("Prefabs/Start"));
-				
-					break;
-
-				default:
-					tile = (GameObject)Instantiate (Resources.Load ("Prefabs/End"));
-				
-					break;
-					}
-
-				pos = new Vector3 ((grid [i, j].point.x - spacer2) - 2, (grid [i, j].point.y - spacer1) - 3, -5);
-				tile.transform.position = pos;
-				tiles.Add(tile);
-								spacer1 += 0.45f;
+				if (toggle == 1) {
+					tileSquare = getGameTile (gameMap [i, j]);
+				}
+				if (gameMap [i, j] == 0) {
+					tileSquare = getGameTile (4);
+				}
+				else if (gameMap [i, j] == 1) {
+					tileSquare = getGameTile (5);
+				}
+				else if (gameMap [i, j] == 2) {
+					tileSquare = getGameTile (6);
+				}
+				else {
+					tileSquare = getGameTile (7);
 				}
 			
-						spacer2 += 0.45f;
-						spacer1 = 0.0f;
-			}*/
-		}
+				pos = new Vector3 (posX + counterLength, posY + counterHeight, -500);
+				tileSquare.transform.position = pos;
+				tiles.Add (tileSquare);
+				counterLength += 0.5f;
+				}
+				counterHeight += 0.5f;
+				counterLength = 0f;
+			}
+	}
+		
 	private GameObject getGameTile(int tileNum){
 
 		GameObject gameTile;
-		Debug.Log("Tile Num: " + tileNum);
 		switch (tileNum) {
 
 		case 0:
@@ -232,23 +148,20 @@ public class Play : Game
 		}
 		return gameTile;
 	}
-	private void OnGUI(){
-
-				
-
-		/*if(playDisplayed){
-				if(GUI.Button(new Rect(20,40,120,20), "Finish")) {
-				//Application.LoadLevel(1);
-
-					Debug.Log("Done Pressed");
-					finishPressed = true;
-				}
+	public void getLevel(){
+		var sr = new StreamReader(Application.dataPath + "/" + "Level1.txt");
+		string fileContents = sr.ReadToEnd();
+		sr.Close();
+		int counter = 0;
+		for (int i=0; i<16; i++) {
+			for (int j=0; j<30; j++){
+			gameMap[i,j] = int.Parse(fileContents[counter].ToString ());
+			counter++;
 			}
 		}
-		public void clearGrid(){//figure out how to destroy grid tiles
-		System.Array.Clear (grid, 0, grid.Length);
-		foreach (GameObject tile in tiles) {
-			Destroy (tile);
-		}*/
+
+	}
+	private void OnGUI(){
+
 	}
 }
