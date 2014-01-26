@@ -27,7 +27,7 @@ public sealed class PlayGameState :  State<GameManager> {
 			//Play.Instance.startSetup();//probably get rid of this and GAME all together
 			//Play.Instance.createTiles();
 			Play.Instance.randomGrid();
-			Play.Instance.displayGrid();
+			Play.Instance.displayGrid(1);
 			Play.Instance.StartCoroutine ("switchColoursTimer");
 		}
 	}

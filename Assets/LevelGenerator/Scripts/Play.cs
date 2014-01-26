@@ -62,11 +62,13 @@ public class Play : Game
 	private void startSwitchTransition(){
 		Debug.Log ("transition");
 		clearGrid ();
+		displayGrid (2);
+
 
 	}
 	private void switchColours()
 	{
-		//clearGrid ();
+		clearGrid ();
 		Debug.Log ("test");
 		for (int i=0; i<gridHeight; i++) {
 			for(int j=0; j<gridLength; j++){
@@ -75,7 +77,7 @@ public class Play : Game
 					gameMap[i,j]= 0;
 			}
 		}
-		displayGrid ();
+		displayGrid (1);
 	}
 	public IEnumerator switchColoursTimer() {
 		while(true)
@@ -83,6 +85,7 @@ public class Play : Game
 			if(switchTransition){
 			switchColours();
 				switchTransition = false;
+				int randomTime = Random.Range(10,21);
 			yield return new WaitForSeconds(3);
 			}
 			else{
@@ -100,7 +103,7 @@ public class Play : Game
 			}
 		}
 	}
-	public void displayGrid(){
+	public void displayGrid(int toggle){
 
 		float counterLength = 0f;
 		float counterHeight = 0f;
@@ -112,8 +115,24 @@ public class Play : Game
 			Vector3 pos;
 				//int random = Random.Range (0, 4);
 				//gameMap[i,j] = random;
-
-			tileSquare = getGameTile (gameMap[i,j]);
+			if(toggle == 1){
+			tileSquare = getGameTile(gameMap[i,j]);
+			}
+			else{
+					Debug.Log ("square: " + gameMap[i,j]);
+				if(gameMap[i,j] == 0){
+						tileSquare = getGameTile (4);
+					}
+				else if(gameMap[i,j] == 1){
+							tileSquare = getGameTile (5);
+					}
+				else if(gameMap[i,j] == 2){
+						tileSquare = getGameTile (6);
+					}
+				else{
+						tileSquare = getGameTile(7);
+					}
+			}
 			pos = new Vector3 (posX+counterLength, posY+counterHeight, -500);
 			tileSquare.transform.position = pos;
 				tiles.Add ( tileSquare);
@@ -173,10 +192,12 @@ public class Play : Game
 						spacer1 = 0.0f;
 			}*/
 		}
-	private GameObject getGameTile(int random){
+	private GameObject getGameTile(int tileNum){
 
 		GameObject gameTile;
-		switch (random) {
+		Debug.Log("Tile Num: " + tileNum);
+		switch (tileNum) {
+
 		case 0:
 			gameTile = (GameObject)Instantiate (Resources.Load ("Prefab/RedTile"));
 			break;
@@ -185,6 +206,24 @@ public class Play : Game
 			break;
 		case 2:
 			gameTile = (GameObject)Instantiate (Resources.Load ("Prefab/YellowTile"));
+			break;
+		case 3:
+			gameTile = (GameObject)Instantiate (Resources.Load ("Prefab/GreenTile"));
+			break;
+		case 4:
+			gameTile = (GameObject)Instantiate (Resources.Load ("Prefab/RedToBlue"));
+			gameTile.GetComponent<Animator>().Play("R2B");
+
+			break;
+		case 5:
+			gameTile = (GameObject)Instantiate (Resources.Load ("Prefab/BlueToGreen"));
+			gameTile.GetComponent<Animator>().Play ("B2G");
+			break;
+		case 6:
+			gameTile = (GameObject)Instantiate (Resources.Load ("Prefab/RedToBlue"));
+			break;
+		case 7:
+			gameTile = (GameObject)Instantiate (Resources.Load ("Prefab/RedToBlue"));
 			break;
 		default:
 			gameTile = (GameObject)Instantiate (Resources.Load ("Prefab/GreenTile"));
