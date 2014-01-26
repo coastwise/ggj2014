@@ -44,11 +44,12 @@ public class BoomerangController : MonoBehaviour
 	void OnCollisionEnter2D(Collision2D collision)
 	{
 		if (collision.gameObject.tag == "Player") {
+			PlayerController player = collision.gameObject.GetComponent<PlayerController>();
 			if (!_isActive || (_returning && collision.gameObject.Equals(_owner)) ) {
-				collision.gameObject.GetComponent<PlayerController>()._fireableBoomerangs += 1;
+				player._fireableBoomerangs += 1;
 				Destroy(this.gameObject);
 			} else {
-				collision.gameObject.GetComponent<PlayerController>().EnterState(typeof(DyingState));
+				if (!player.isInvincible) player.EnterState(typeof(DyingState));
 				rigidbody2D.gravityScale = 0.1f;
 				_isActive = false;
 			}

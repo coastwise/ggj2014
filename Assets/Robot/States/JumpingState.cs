@@ -51,7 +51,10 @@ public class JumpingState : PlayerState {
 		if (deltaY > 0.5f) {
 			//coll.gameObject.GetComponent<PlayerController>();
 			Debug.Log(player.name + " stomped " + coll.gameObject.name);
-			coll.gameObject.GetComponent<PlayerController>().EnterState(typeof(DyingState));
+
+			PlayerController other = coll.gameObject.GetComponent<PlayerController>();
+			if (!other.isInvincible) other.EnterState(typeof(DyingState));
+
 			player.EnterState(typeof(StompingState));
 		}
 	}

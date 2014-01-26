@@ -28,6 +28,8 @@ public class PlayerController : MonoBehaviour {
 		get; private set;
 	}
 
+	public bool isInvincible = false;
+
 	private Color cachedPlayerTint;
 
 	private Dictionary<System.Type, PlayerState> states;
@@ -145,6 +147,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public void Respawn () {
+		isInvincible = true;
 		gameObject.renderer.enabled = true;
 		transform.position = spawnPoints[Random.Range(0,spawnPoints.Count)].position;
 		StartCoroutine(BlinkForAWhile());
@@ -157,6 +160,7 @@ public class PlayerController : MonoBehaviour {
 			yield return null;
 			gameObject.renderer.enabled = true;
 		}
+		isInvincible = false;
 	}
 
 }
