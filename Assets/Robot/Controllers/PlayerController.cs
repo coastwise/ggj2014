@@ -6,6 +6,8 @@ public class PlayerController : MonoBehaviour {
 
 	public int joystick;
 
+	public List<Transform> spawnPoints;
+
 	//public int color;
 
 	public float groundAcceleration = 2.6f;
@@ -26,6 +28,8 @@ public class PlayerController : MonoBehaviour {
 		get; private set;
 	}
 
+	private Color cachedPlayerTint;
+
 	private Dictionary<System.Type, PlayerState> states;
 	private PlayerState currentState;
 
@@ -36,6 +40,8 @@ public class PlayerController : MonoBehaviour {
 
 	void Start () {
 		name = "Player " + joystick;
+
+		cachedPlayerTint = gameObject.GetComponent<SpriteRenderer>().color;
 
 		// initialize states once (no gc)
 		states = new Dictionary<System.Type, PlayerState>();
@@ -132,4 +138,25 @@ public class PlayerController : MonoBehaviour {
 
 		currentState.Update();
 	}
+
+	public void FinishedExploding () {
+		gameObject.GetComponent<SpriteRenderer>().color = cachedPlayerTint;
+		gameObject.renderer.enabled = false;
+	}
+
+	public void Respawn () {
+		gameObject.renderer.enabled = true;
+		transform.position = spawnPoints[Random.Range(0,spawnPoints.Count)].position;
+		StartCoroutine(BlinkForAWhile());
+	}
+
+	public IEnumerator BlinkForAWhile () {
+		for(int i = 0; i < 60; i++) {
+			yield return null;
+			gameObject.renderer.enabled = false;
+			yield return null;
+			gameObject.renderer.enabled = true;
+		}
+	}
+
 }
