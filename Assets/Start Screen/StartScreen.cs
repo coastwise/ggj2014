@@ -4,21 +4,16 @@ using System.Collections;
 public class StartScreen : MonoBehaviour {
 
 	public SpriteRenderer splashImage;
-	public Animation	background;
-	public Animation	title;
-	public Animation	startButton;
+	public Animation	menu;
 	delegate void StartScreenState ();
 
 	StartScreenState state;
 
-	int curSplash = 0;
 	bool isVisible = false;
 
 	void Start () {
 		state = SplashScreenUpdate;
-		background.wrapMode = WrapMode.Once;
-		title.wrapMode = WrapMode.Once;
-		startButton.wrapMode = WrapMode.Once;
+		menu.wrapMode = WrapMode.Once;
 	}
 
 	void Update () {
@@ -39,18 +34,35 @@ public class StartScreen : MonoBehaviour {
 
 	void StartScreenInit () {
 
-		Debug.Log ("Init");
-		background.Play();
-		
-		Debug.Log ("Init2");
+		menu.Play();
 
-		title.Play();
-		startButton.Play();
-
-		state = StartScreenUpdate;
+		state = StartScreenAnimation;
 	}
 
-	void StartScreenUpdate () {
+	void StartScreenAnimation () {
+		if ( !menu.isPlaying && Input.GetButtonDown("Start_1") || Input.GetButtonDown("Start_2") || Input.GetButtonDown("Start_3") || Input.GetButtonDown("Start_4")) {
+			menu["Slide Background"].time = 1000;
+			state = StartScreenCheckForTheStartButton;
+		}
+	}
 
+	void StartScreenCheckForTheStartButton () {
+		if ( !menu.isPlaying && Input.GetButtonDown("Start_1") || Input.GetButtonDown("Start_2") || Input.GetButtonDown("Start_3") || Input.GetButtonDown("Start_4")) {
+			menu.Play ("Zoom Fade");
+
+			state = StartScreenExiting;
+
+			StartCoroutine("LoadCharacterSelectCoroutine");
+		}
+	}
+
+	void StartScreenExiting () {
+
+	}
+
+	IEnumerator LoadCharacterSelectCoroutine () {
+		yield return new WaitForSeconds(1);
+
+		// Load Character Select Scene
 	}
 }
