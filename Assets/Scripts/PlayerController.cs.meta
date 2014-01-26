@@ -2,7 +2,8 @@ fileFormatVersion: 2
 guid: 056ee57689956418a8eab9b667f41161
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - _boomerangPrefab: {fileID: 100000, guid: 5884e1c2467e3264380a150a1e6a36ef, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
