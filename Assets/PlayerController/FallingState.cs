@@ -6,7 +6,7 @@ public class FallingState : JumpingState {
 	public FallingState (PlayerController player) : base (player) {}
 	
 	public override void OnEnter () {
-		// don't jump
+		player.GetComponent<Animator>().SetTrigger("Fall");
 	}
 	
 }

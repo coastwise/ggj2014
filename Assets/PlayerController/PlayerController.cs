@@ -92,6 +92,8 @@ public class PlayerController : MonoBehaviour {
 			currentState.Right();
 		} else if (Input.GetAxis("L_XAxis_"+joystick) < 0) {
 			currentState.Left();
+		} else {
+			currentState.Idle();
 		}
 
 		currentState.Update();

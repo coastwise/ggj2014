@@ -7,6 +7,7 @@ public class JumpingState : PlayerState {
 
 	public override void OnEnter () {
 		player.gameObject.rigidbody2D.velocity += Vector2.up * player.instantaneousJumpVelocity;
+		player.GetComponent<Animator>().SetTrigger("Jump");
 	}
 	
 	override public void Jump () {
@@ -32,6 +33,8 @@ public class JumpingState : PlayerState {
 	override public void HitFloor(){
 		Debug.Log("Player " + player.joystick + " Landed");
 		player.EnterState(typeof(StandingState));
+
+		player.GetComponent<Animator>().SetTrigger("Land");
 	}
 
 	override public void HitWall () {
@@ -49,6 +52,10 @@ public class JumpingState : PlayerState {
 			Debug.Log(player.name + " stomped " + coll.gameObject.name);
 			player.EnterState(typeof(StompingState));
 		}
+	}
+
+	public override void Update () {
+		player.GetComponent<Animator>().SetFloat("y-velocity", player.rigidbody2D.velocity.y);
 	}
 	
 }

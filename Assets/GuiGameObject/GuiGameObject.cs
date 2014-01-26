@@ -13,10 +13,13 @@ public class GuiGameObject : MonoBehaviour
 	void Start()
 	{
 		_pointerTextures = new Texture[] {_textureP1Pointer, _textureP2Pointer, _textureP3Pointer, _textureP4Pointer};
-		GameObject[] gos = GameObject.FindGameObjectsWithTag("Player");
-		_playerTransforms = new Transform[gos.Length];
-		foreach (GameObject go in gos)
-			_playerTransforms[go.GetComponent<PlayerController>().joystick - 1] = go.transform;
+
+		PlayerController[] players = (PlayerController[])GameObject.FindObjectsOfType(typeof(PlayerController));
+		_playerTransforms = new Transform[players.Length];
+
+		foreach (PlayerController player in players) {
+			_playerTransforms[player.joystick - 1] = player.transform;
+		}
 	}
 
 	void OnGUI()
