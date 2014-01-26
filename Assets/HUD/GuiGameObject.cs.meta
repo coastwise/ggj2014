@@ -7,6 +7,7 @@ MonoImporter:
   - _textureP2Pointer: {fileID: 2800000, guid: 39f0658ee38f6884d83c423b18bccfd4, type: 3}
   - _textureP3Pointer: {fileID: 2800000, guid: e7462718502d3564784d98dedf9437f8, type: 3}
   - _textureP4Pointer: {fileID: 2800000, guid: ea59affd09d8f1242a4ac5adea1a988c, type: 3}
+  - _miniBoomerang: {fileID: 2800000, guid: dce7adf74bfe2b1478d4498cddc2104d, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
