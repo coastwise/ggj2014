@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 
 public class Play : Game 
 {
@@ -156,6 +157,20 @@ public class Play : Game
 
 		}
 		return gameTile;
+	}
+
+	public void getLevel(){
+		var sr = new StreamReader(Application.dataPath + "/" + "Level1.txt");
+		string fileContents = sr.ReadToEnd();
+		sr.Close();
+		int counter = 0;
+		for (int i=0; i<16; i++) {
+			for (int j=0; j<30; j++){
+				gameMap[i,j] = int.Parse(fileContents[counter].ToString ());
+				counter++;
+			}
+		}
+		
 	}
 
 	private void OnGUI(){
