@@ -29,6 +29,9 @@ public class PlayerController : MonoBehaviour {
 
 	// "is false when preceded by its quotation" is false when preceded by its quotation
 
+	public int _fireableBoomerangs;
+	public GameObject _boomerangPrefab;
+
 	void Start () {
 		name = "Player " + joystick;
 
@@ -83,12 +86,26 @@ public class PlayerController : MonoBehaviour {
 
 	void Update () {
 		// check my input and call state methods
-		if (Input.GetButtonDown("A_"+joystick)) {
-			currentState.Jump();
+		if (Input.GetButtonDown("X_"+joystick) && _fireableBoomerangs > 0)
+		{
+			//GameObject boomerang = (GameObject)Instantiate(_boomerangPrefab, transform.position, Quaternion.identity);
+
+			if (Input.GetAxis("L_XAxis_"+joystick) > 0)
+			{
+				GameObject boomerang = (GameObject)Instantiate(_boomerangPrefab, transform.position + Vector3.right, Quaternion.identity);
+				boomerang.GetComponent<BoomerangController>().CreateBoomerang(this.gameObject, Vector3.right);
+				_fireableBoomerangs -= 1;
+			}
+			else if (Input.GetAxis("L_XAxis_"+joystick) < 0)
+			{
+				GameObject boomerang = (GameObject)Instantiate(_boomerangPrefab, transform.position + Vector3.left, Quaternion.identity);
+				boomerang.GetComponent<BoomerangController>().CreateBoomerang(this.gameObject, Vector3.left);
+				_fireableBoomerangs -= 1;
+			}
 		}
 
-		if (Input.GetButtonDown("X_"+joystick)) {
-			currentState.Throw();
+		if (Input.GetButtonDown("A_"+joystick)) {
+			currentState.Jump();
 		}
 
 		if (Input.GetAxis("L_XAxis_"+joystick) > 0) {
