@@ -24,8 +24,10 @@ public sealed class PlayGameState :  State<GameManager> {
 			g.ChangeLocation(Locations.playGameState);
 			Play.Instance.playDisplayed = true;
 			Debug.Log ("Entering PlayGame");
+
 			//Play.Instance.startSetup();//probably get rid of this and GAME all together
-			//Play.Instance.createTiles();
+			Play.Instance.createTiles();
+			Play.Instance.createGrid();
 			Play.Instance.randomGrid();
 			Play.Instance.displayGrid();
 			Play.Instance.StartCoroutine ("switchColoursTimer");

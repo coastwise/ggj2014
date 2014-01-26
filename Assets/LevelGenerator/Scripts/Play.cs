@@ -12,7 +12,12 @@ public class Play : Game
 		get { return instance ?? (instance = new GameObject("Play").AddComponent<Play>()); }
 		
 	}
-	
+
+	List<Sprite> _tilesBlue = new List<Sprite>();
+	List<Sprite> _tilesGreen = new List<Sprite>();
+	List<Sprite> _tilesRed = new List<Sprite>();
+	List<Sprite> _tilesYellow = new List<Sprite>();
+
 
 	static int gridLength = 30;
 	static int gridHeight = 16;
@@ -22,68 +27,27 @@ public class Play : Game
 
 	public bool switchTransition = true;
 
-	//public List<Tile> grid = new List<Tile> ();
-	//Tile[,] grid = new Tile[gridLength,gridHeight];
-	List <GameObject> tiles = new List<GameObject>();
+	GameObject[,] tiles;
 	int[,] gameMap = new int[gridHeight,gridLength];
-	//public override void startSetup()
-	//{
-	//	Debug.Log("playSetup");
-		//createTiles ();
-		//dealTiles ();
 
 
-		/*
-		 * //Place Prefab
-		GameObject grassland = (GameObject)Instantiate(Resources.Load("Grassland"));
-		Vector3 testPosition = new Vector3 (0, 0, 0);
-		grassland.transform.position = testPosition;
-		*/
-
-	//}
-	/*public void createTiles(){
-
-		int[,] mazeData = Setup.Instance.getMazeData ();
-		for(int i=0; i<gridLength; i++)
-		{
-			for(int j=0; j<gridHeight; j++)
-			{
-				Tile t = new Tile(i,j,mazeData[i,j]);
-				grid[i,j] = t;
-			}
-		}
-	}*/
 	public void clearGrid(){//figure out how to destroy grid tiles
 
-				foreach (GameObject tile in tiles) {
-						Destroy (tile);
-				}
-		}
+	}
 	private void startSwitchTransition(){
-		Debug.Log ("transition");
-		clearGrid ();
 
 	}
 	private void switchColours()
 	{
-		//clearGrid ();
-		Debug.Log ("test");
-		for (int i=0; i<gridHeight; i++) {
-			for(int j=0; j<gridLength; j++){
-				gameMap[i,j]++;
-				if(gameMap[i,j]==4)
-					gameMap[i,j]= 0;
-			}
-		}
-		displayGrid ();
+		displayGrid();
 	}
 	public IEnumerator switchColoursTimer() {
 		while(true)
 		{
 			if(switchTransition){
-			switchColours();
+				switchColours();
 				switchTransition = false;
-			yield return new WaitForSeconds(3);
+				yield return new WaitForSeconds(3);
 			}
 			else{
 				startSwitchTransition();
@@ -92,6 +56,60 @@ public class Play : Game
 			}
 		}
 	}
+
+	public void createTiles () {
+
+		Object[] tilesprites = Resources.LoadAll<Sprite>("Platforms/tiles");
+
+		_tilesBlue.Add (tilesprites[8] as Sprite);
+		_tilesBlue.Add (tilesprites[9] as Sprite);
+		_tilesBlue.Add (tilesprites[10] as Sprite);
+		_tilesBlue.Add (tilesprites[11] as Sprite);
+
+		
+		_tilesGreen.Add (tilesprites[4] as Sprite);
+		_tilesGreen.Add (tilesprites[5] as Sprite);
+		_tilesGreen.Add (tilesprites[6] as Sprite);
+		_tilesGreen.Add (tilesprites[7] as Sprite);
+		
+		_tilesRed.Add (tilesprites[16] as Sprite);
+		_tilesRed.Add (tilesprites[17] as Sprite);
+		_tilesRed.Add (tilesprites[18] as Sprite);
+		_tilesRed.Add (tilesprites[19] as Sprite);
+
+		_tilesYellow.Add (tilesprites[12] as Sprite);
+		_tilesYellow.Add (tilesprites[13] as Sprite);
+		_tilesYellow.Add (tilesprites[14] as Sprite);
+		_tilesYellow.Add (tilesprites[15] as Sprite);
+
+	}
+
+
+	public void createGrid() {
+		tiles = new GameObject[gridHeight,gridLength];
+		float counterLength = 0f;
+		float counterHeight = 0f;
+		float posX = -7.25f;
+		float posY = -3.75f;
+		for (int i=0; i<gridHeight; i++) {
+			for(int j=0; j<gridLength; j++){
+				GameObject tileSquare;
+				Vector3 pos;
+				//int random = Random.Range (0, 4);
+				//gameMap[i,j] = random;
+				
+				tileSquare = new GameObject();
+				tileSquare.AddComponent<SpriteRenderer>();
+				pos = new Vector3 (posX+counterLength, posY+counterHeight, -500);
+				tileSquare.transform.position = pos;
+				tiles[i,j] = tileSquare;
+				counterLength += 0.5f;
+			}
+			counterHeight += 0.5f;
+			counterLength = 0f;
+		}
+	}
+
 	public void randomGrid(){
 		for (int i=0; i<gridHeight; i++) {
 			for (int j=0; j<gridLength; j++){
@@ -100,116 +118,46 @@ public class Play : Game
 			}
 		}
 	}
+
 	public void displayGrid(){
 
-		float counterLength = 0f;
-		float counterHeight = 0f;
-		float posX = -7.25f;
-		float posY = -3.75f;
 		for (int i=0; i<gridHeight; i++) {
 			for(int j=0; j<gridLength; j++){
-			GameObject tileSquare;
-			Vector3 pos;
 				//int random = Random.Range (0, 4);
 				//gameMap[i,j] = random;
-
-			tileSquare = getGameTile (gameMap[i,j]);
-			pos = new Vector3 (posX+counterLength, posY+counterHeight, -500);
-			tileSquare.transform.position = pos;
-				tiles.Add ( tileSquare);
-			counterLength += 0.5f;
-			}
-			counterHeight += 0.5f;
-			counterLength = 0f;
-		}
 		
-
-
-		/*float spacer1 = 0f;
-		float spacer2 = 0f;
-		for (int i=0; i<gridLength; i++) {
-			for (int j=0; j<gridHeight; j++) {
-				GameObject tile;
-				Vector3 pos;
-				Debug.Log ("cost: " + grid[i,j].cost);
-				switch(grid[i,j].cost){
-
-				case 0:
-					tile = (GameObject)Instantiate (Resources.Load ("Prefabs/OpenSpace"));
-					//pos = new Vector3 ((grid [i, j].point.x - spacer2) - 2, (grid [i, j].point.y - spacer1) - 3, 0);
-					//tile.transform.position = pos;
-					//tiles.Add(tile);
-					break;
-					case 1:
-					tile = (GameObject)Instantiate (Resources.Load ("Prefabs/Swamp"));
-
-					break;
-				case 2:
-					tile = (GameObject)Instantiate (Resources.Load ("Prefabs/Grassland"));
-				
-					break;
-					case 3:
-					tile = (GameObject)Instantiate (Resources.Load ("Prefabs/Obstacle"));
 			
-					break;	
-				case 4:
-					tile = (GameObject)Instantiate (Resources.Load ("Prefabs/Start"));
-				
-					break;
-
-				default:
-					tile = (GameObject)Instantiate (Resources.Load ("Prefabs/End"));
-				
-					break;
-					}
-
-				pos = new Vector3 ((grid [i, j].point.x - spacer2) - 2, (grid [i, j].point.y - spacer1) - 3, -5);
-				tile.transform.position = pos;
-				tiles.Add(tile);
-								spacer1 += 0.45f;
-				}
+			tiles[i,j].GetComponent<SpriteRenderer>().sprite = getSpriteRenderer (gameMap[i,j], Random.Range (0,4));
 			
-						spacer2 += 0.45f;
-						spacer1 = 0.0f;
-			}*/
+			}
 		}
-	private GameObject getGameTile(int random){
+	}
 
-		GameObject gameTile;
+	public void cycleGrid () {
+
+	}
+
+	private Sprite getSpriteRenderer(int random, int random2){
+
+		Sprite gameTile;
 		switch (random) {
-		case 0:
-			gameTile = (GameObject)Instantiate (Resources.Load ("Prefab/RedTile"));
+		case 0: gameTile = _tilesRed[random2];
 			break;
 		case 1:
-			gameTile = (GameObject)Instantiate (Resources.Load ("Prefab/BlueTile"));
+			gameTile = _tilesBlue[random2];
 			break;
 		case 2:
-			gameTile = (GameObject)Instantiate (Resources.Load ("Prefab/YellowTile"));
+			gameTile = _tilesYellow[random2];
 			break;
 		default:
-			gameTile = (GameObject)Instantiate (Resources.Load ("Prefab/GreenTile"));
+			gameTile = _tilesGreen[random2];
 			break;
 
 		}
 		return gameTile;
 	}
+
 	private void OnGUI(){
-
-				
-
-		/*if(playDisplayed){
-				if(GUI.Button(new Rect(20,40,120,20), "Finish")) {
-				//Application.LoadLevel(1);
-
-					Debug.Log("Done Pressed");
-					finishPressed = true;
-				}
-			}
-		}
-		public void clearGrid(){//figure out how to destroy grid tiles
-		System.Array.Clear (grid, 0, grid.Length);
-		foreach (GameObject tile in tiles) {
-			Destroy (tile);
-		}*/
+		
 	}
 }
