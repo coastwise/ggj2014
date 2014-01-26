@@ -9,6 +9,7 @@ public class StandingState : PlayerState {
 
 	public override void OnEnter ()
 	{
+		player._canDoublejump = true;
 		Animator animator = player.GetComponent<Animator>();
 	}
 

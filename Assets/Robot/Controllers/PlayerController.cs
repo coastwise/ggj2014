@@ -8,6 +8,9 @@ public class PlayerController : MonoBehaviour {
 
 	public List<Transform> spawnPoints;
 
+	public GameObject _doublejumpExplosion;
+	public bool _canDoublejump = false;
+
 	//public int color;
 
 	public float groundAcceleration = 2.6f;
@@ -98,6 +101,10 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
+	public void SpawnDoublejumpExplosion() {
+		Instantiate(_doublejumpExplosion, transform.position + (Vector3.down * 0.2f), Quaternion.identity);
+	}
+
 	void Update () {
 		// check my input and call state methods
 		if (Input.GetButtonDown("X_"+joystick) && _fireableBoomerangs > 0)
@@ -126,7 +133,12 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 
-		if (Input.GetButtonDown("A_"+joystick)) {
+		if (Input.GetButtonDown("A_"+joystick))
+		{
+//			if ((currentState.GetType() == typeof(JumpingState) || currentState.GetType() == typeof(FallingState)) && _canDoublejump)
+//			{
+//				Debug.Log("FLAG");
+//			}
 			currentState.Jump();
 		}
 
