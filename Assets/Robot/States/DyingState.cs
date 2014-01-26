@@ -26,6 +26,7 @@ public class DyingState : PlayerState {
 			player._fireableBoomerangs = 3;
 			player.EnterState(typeof(StandingState));
 			player.GetComponent<Animator>().SetTrigger("Respawn");
+			player.Respawn();
 		}
 	}
 
