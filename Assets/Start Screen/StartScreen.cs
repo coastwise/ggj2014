@@ -3,34 +3,54 @@ using System.Collections;
 
 public class StartScreen : MonoBehaviour {
 
-	public SpriteRenderer[] splashImages;
+	public SpriteRenderer splashImage;
+	public Animation	background;
+	public Animation	title;
+	public Animation	startButton;
+	delegate void StartScreenState ();
+
+	StartScreenState state;
 
 	int curSplash = 0;
 	bool isVisible = false;
 
 	void Start () {
-
+		state = SplashScreenUpdate;
+		background.wrapMode = WrapMode.Once;
+		title.wrapMode = WrapMode.Once;
+		startButton.wrapMode = WrapMode.Once;
 	}
 
 	void Update () {
+		state();
+	}
 
+	void SplashScreenUpdate () {
 		float color = Mathf.Sin (Time.timeSinceLevelLoad - Mathf.Deg2Rad * 89);
 
-
-		splashImages[curSplash].color = new Color(color, 
-		                                          color, 
-		                                          color);
-
+		splashImage.color = new Color(1, 1, 1, color);
+		
 		isVisible = color > 0;
-
-		//Debug.Log (color);
-		//Debug.Log (Mathf.Sin (Time.timeSinceLevelLoad - Mathf.Deg2Rad * 89 - Time.deltaTime));
-
 		if (!isVisible && color < Mathf.Sin (Time.timeSinceLevelLoad - Mathf.Deg2Rad * 89 - Time.deltaTime)) {
-			if (++curSplash > splashImages.Length)
-				Application.Quit();
-				// load the next scene
+			state = StartScreenInit;
 		}
+	}
+
+
+	void StartScreenInit () {
+
+		Debug.Log ("Init");
+		background.Play();
+		
+		Debug.Log ("Init2");
+
+		title.Play();
+		startButton.Play();
+
+		state = StartScreenUpdate;
+	}
+
+	void StartScreenUpdate () {
 
 	}
 }
