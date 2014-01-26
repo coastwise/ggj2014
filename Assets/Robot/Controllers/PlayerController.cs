@@ -6,7 +6,10 @@ public class PlayerController : MonoBehaviour {
 
 	public int joystick;
 
-	//public int color;
+	public AudioClip explosionSound;
+	public AudioClip jumpSound;
+	public AudioClip throwSound;
+	public AudioClip wallJumpSound;
 
 	public float groundAcceleration = 2.6f;
 	public float maxGroundVelocity = 16f;
@@ -44,8 +47,13 @@ public class PlayerController : MonoBehaviour {
 		states.Add(typeof(StompingState), new StompingState(this));
 		states.Add(typeof(FallingState), new FallingState(this));
 		states.Add(typeof(WallSlidingState), new WallSlidingState(this));
-		states.Add(typeof(DyingState), new DyingState(this));
+		states.Add(typeof(DyingState), new DyingState(this)); 
 
+		explosionSound = (AudioClip)Resources.Load("explosion");
+		jumpSound = (AudioClip)Resources.Load("jump");
+		throwSound = (AudioClip)Resources.Load ("boomerang1");
+		wallJumpSound = (AudioClip)Resources.Load("walljump");
+		
 		// enter the initial state
 		currentState = states[typeof(StandingState)];
 		currentState.OnEnter();
@@ -108,6 +116,7 @@ public class PlayerController : MonoBehaviour {
 				boomerang.GetComponent<BoomerangController>().CreateBoomerang(this.gameObject, Vector3.left);
 				_fireableBoomerangs -= 1;
 			}
+			gameObject.audio.PlayOneShot(throwSound);
 		}
 
 		if (Input.GetButtonDown("A_"+joystick)) {

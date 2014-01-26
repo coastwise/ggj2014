@@ -6,13 +6,15 @@ public class DyingState : PlayerState {
 	public DyingState (PlayerController player) : base (player) {}
 
 	float countdown;
-	
+
 	public override void OnEnter () {
 		player.GetComponent<Animator>().SetTrigger("Explode");
 		countdown = player.respawnTimeout;
 
 		player.collider2D.enabled = false;
 		player.rigidbody2D.isKinematic = true;
+
+		player.gameObject.audio.PlayOneShot(player.explosionSound);
 
 		player._fireableBoomerangs = 0;
 	}
