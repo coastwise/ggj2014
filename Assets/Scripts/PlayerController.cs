@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour {
 
 	// "is false when preceded by its quotation" is false when preceded by its quotation
 
-	public int _fireableBoomerangs;
+	public int _fireableBoomerangs = 3;
 	public GameObject _boomerangPrefab;
 
 	void Start () {
