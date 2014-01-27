@@ -120,18 +120,11 @@ public class PlayerController : MonoBehaviour {
 		if (Input.GetButtonDown("X_"+joystick) && _fireableBoomerangs > 0)
 		{
 			float xAxis = Input.GetAxis("L_XAxis_"+joystick);
-			if (xAxis > 0.0f)
-				xAxis = 1.0f;
-			else if (xAxis < 0.0f)
-				xAxis = -1.0f;
-
 			float yAxis = Input.GetAxis("L_YAxis_"+joystick);
-			if (yAxis > 0.0f)
-				yAxis = 1.0f;
-			else if (yAxis < 0.0f)
-				yAxis = -1.0f;
 
+			//Vector3 projectileDirection = EightProjectileDirection(xAxis, -yAxis);
 			Vector3 projectileDirection = new Vector3(xAxis, -yAxis, 0.0f).normalized;
+
 			if (projectileDirection != Vector3.zero)
 			{
 				float offset = 0.8f;
@@ -162,6 +155,20 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		currentState.Update();
+	}
+
+	Vector3 EightProjectileDirection (float x, float y) {
+		if (x > 0.0f)
+			x = 1.0f;
+		else if (x < 0.0f)
+			x = -1.0f;
+
+		if (y > 0.0f)
+			y = 1.0f;
+		else if (y < 0.0f)
+			y = -1.0f;
+
+		return new Vector3(x,y,0).normalized;
 	}
 
 	public void FinishedExploding () {

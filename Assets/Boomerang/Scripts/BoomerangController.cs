@@ -33,8 +33,8 @@ public class BoomerangController : MonoBehaviour
 		transform.Rotate(_rotation * Time.deltaTime);
 		if (!_returning)
 		{
-			float sin = Mathf.Sin(((Time.time - _spawnTime) * 4.0f) + Mathf.Deg2Rad * 90.0f);
-			transform.Translate(_direction * sin * Time.deltaTime * 24.0f, Space.World);
+			float sin = Mathf.Sin(((Time.time - _spawnTime) * 2.5f) + Mathf.Deg2Rad * 90.0f);
+			transform.Translate(_direction * sin * Time.deltaTime * 16.0f, Space.World);
 			Debug.Log(_direction);
 			if (sin <= 0)
 				_returning = true;
