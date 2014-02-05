@@ -116,6 +116,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Update () {
+		Debug.Log (currentState.GetType().ToString());
 		// check my input and call state methods
 		if (Input.GetButtonDown("X_"+joystick) && _fireableBoomerangs > 0)
 		{
@@ -131,9 +132,9 @@ public class PlayerController : MonoBehaviour {
 
 			if (projectileDirection != Vector3.zero)
 			{
-				float offset = 0.8f;
+				float offset = 0.0f;
 				if (yAxis == 0.0f)
-					offset = 0.5f;
+					offset = 0.0f;
 				GameObject boomerang = (GameObject)Instantiate(_boomerangPrefab, transform.position + (projectileDirection * offset), Quaternion.identity);
 				boomerang.GetComponent<BoomerangController>().CreateBoomerang(this.gameObject, projectileDirection);
 				_fireableBoomerangs -= 1;
