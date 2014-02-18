@@ -9,11 +9,18 @@ public class LevelEditor : MonoBehaviour {
 	bool showGUI = false;
 	bool saveWindowShow = false;
 	ArrayList allBlocks;
-	ArrayList blueBlocks;
+	public ArrayList blueBlocks;
 	ArrayList redBlocks;
 	ArrayList greenBlocks;
 	ArrayList yellowBlocks;
 	ArrayList grassBlocks;
+
+	int blueTerrain = 8;
+	int redTerrain = 9;
+	int yellowTerrain = 10;
+	int greenTerrain = 11;
+
+	bool deletePressed = false;
 
 	Ray ray;
 	RaycastHit2D hit;
@@ -34,6 +41,19 @@ public class LevelEditor : MonoBehaviour {
 		if(platforms.transform.childCount > 0){
 			foreach(Transform child in platforms.transform){
 				allBlocks.Add(child.gameObject);
+
+				if(child.gameObject.layer == blueTerrain){
+					blueBlocks.Add(child.gameObject);
+				}
+				else if(child.gameObject.layer == redTerrain){
+					redBlocks.Add(child.gameObject);
+				}
+				else if(child.gameObject.layer == yellowTerrain){
+					yellowBlocks.Add(child.gameObject);
+				}
+				else if(child.gameObject.layer == greenTerrain){
+					greenBlocks.Add(child.gameObject);
+				}
 			}
 		}
 	}
@@ -41,30 +61,42 @@ public class LevelEditor : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if(Input.GetKeyDown(KeyCode.Mouse0) && !showGUI && !saveWindowShow){
-			ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-			hit = Physics2D.GetRayIntersection(ray);
-			if(hit.collider != null){
-				foreach(GameObject block in allBlocks){
-					block.GetComponent<PositionBlock>().hasFocus = false;
-				}
-				hit.collider.gameObject.GetComponent<PositionBlock>().hasFocus = true;
-			}
-			else if(!showGUI && !saveWindowShow){
+		if(Debug.isDebugBuild){
+
+			if(Input.GetKeyDown(KeyCode.Mouse0) && !showGUI && !saveWindowShow){
 				ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-				foreach(GameObject block in allBlocks){
-					PositionBlock pb = block.GetComponent<PositionBlock>();
-					if(pb.hasFocus){
-						Vector3 v = Vector3.zero;
-						v.x = Mathf.Floor(ray.origin.x);
-						v.y = Mathf.Floor(ray.origin.y) + 0.25f;
-						v.z = 0;
-						pb.clampAndMove(v);
+				hit = Physics2D.GetRayIntersection(ray);
+				if(hit.collider != null){
+					foreach(GameObject block in allBlocks){
+						block.GetComponent<PositionBlock>().hasFocus = false;
+					}
+					hit.collider.gameObject.GetComponent<PositionBlock>().hasFocus = true;
+				}
+				else if(!showGUI && !saveWindowShow){
+					ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+					foreach(GameObject block in allBlocks){
+						PositionBlock pb = block.GetComponent<PositionBlock>();
+						if(pb.hasFocus){
+							Vector3 v = Vector3.zero;
+							v.x = Mathf.Floor(ray.origin.x);
+							v.y = Mathf.Floor(ray.origin.y) + 0.25f;
+							v.z = 0;
+							pb.clampAndMove(v);
+						}
 					}
 				}
 			}
+			Debug.DrawLine(ray.origin, hit.point, Color.red);
+
+			if(Input.GetKeyDown(KeyCode.Delete) && !deletePressed){
+				deletePressed = true;
+				deleteCurrent();
+			}
+
+			if(Input.GetKeyUp(KeyCode.Delete)){
+				deletePressed = false;
+			}
 		}
-		Debug.DrawLine(ray.origin, hit.point, Color.red);
 	}
 
 	void OnGUI(){
@@ -93,7 +125,7 @@ public class LevelEditor : MonoBehaviour {
 		}
 	}
 
-	private void createBlock(int numBlocks, string partialPath){
+	private void createBlock(int numBlocks, string partialPath, string color){
 
 		StringBuilder path = new StringBuilder();
 		path.Append("Prefabs/LevelComponents/");
@@ -102,7 +134,19 @@ public class LevelEditor : MonoBehaviour {
 		go.transform.parent = platforms.transform;
 		go.transform.position = new Vector3(0.0f,0.25f,0.0f);
 		go.GetComponent<PositionBlock>().numBlocks = numBlocks;
-		blueBlocks.Add(go);
+
+		if(color == "blue"){
+			blueBlocks.Add(go);
+		}
+		else if(color == "red"){
+			redBlocks.Add(go);
+		}
+		else if(color == "yellow"){
+			yellowBlocks.Add(go);
+		}
+		else if(color == "green"){
+			greenBlocks.Add(go);
+		}
 		
 		if(allBlocks.Count > 0){
 			foreach(GameObject block in allBlocks){
@@ -157,7 +201,7 @@ public class LevelEditor : MonoBehaviour {
 		// 2 blocks column
 		if(GUI.Button(new Rect(x,y,w,h), "2b") && Input.GetMouseButtonUp(0)){
 			if(blueBlocks.Count < 10){
-				createBlock(2, "2_blocks/2_b_blocks1");
+				createBlock(2, "2_blocks/2_b_blocks1", "blue");
 			}
 			else{
 				Debug.Log("That's 10 already, fool");
@@ -167,7 +211,7 @@ public class LevelEditor : MonoBehaviour {
 
 		if(GUI.Button(new Rect(x,y,w,h), "2r") && Input.GetMouseButtonUp(0)){
 			if(redBlocks.Count < 10){
-				createBlock(2, "2_blocks/2_r_blocks1");
+				createBlock(2, "2_blocks/2_r_blocks1", "red");
 			}
 			else{
 				Debug.Log("That's 10 already, fool");
@@ -177,7 +221,7 @@ public class LevelEditor : MonoBehaviour {
 
 		if(GUI.Button(new Rect(x,y,w,h), "2g") && Input.GetMouseButtonUp(0)){
 			if(greenBlocks.Count < 10){
-				createBlock(2, "2_blocks/2_g_blocks1");
+				createBlock(2, "2_blocks/2_g_blocks1", "green");
 			}
 			else{
 				Debug.Log("That's 10 already, fool");
@@ -187,7 +231,7 @@ public class LevelEditor : MonoBehaviour {
 
 		if(GUI.Button(new Rect(x,y,w,h), "2y") && Input.GetMouseButtonUp(0)){
 			if(yellowBlocks.Count < 10){
-				createBlock(2, "2_blocks/2_y_blocks1");
+				createBlock(2, "2_blocks/2_y_blocks1", "yellow");
 			}
 			else{
 				Debug.Log("That's 10 already, fool");
@@ -206,7 +250,7 @@ public class LevelEditor : MonoBehaviour {
 		//4 blocks column
 		if(GUI.Button(new Rect(x,y,w,h), "4b") && Input.GetMouseButtonUp(0)){
 			if(blueBlocks.Count < 10){
-				createBlock(4, "4_blocks/4_b_blocks1");
+				createBlock(4, "4_blocks/4_b_blocks1", "blue");
 			}
 			else{
 				Debug.Log("That's 10 already, fool");
@@ -216,7 +260,7 @@ public class LevelEditor : MonoBehaviour {
 
 		if(GUI.Button(new Rect(x,y,w,h), "4r") && Input.GetMouseButtonUp(0)){
 			if(redBlocks.Count < 10){
-				createBlock(4, "4_blocks/4_r_blocks1");
+				createBlock(4, "4_blocks/4_r_blocks1", "red");
 			}
 			else{
 				Debug.Log("That's 10 already, fool");
@@ -226,7 +270,7 @@ public class LevelEditor : MonoBehaviour {
 
 		if(GUI.Button(new Rect(x,y,w,h), "4g") && Input.GetMouseButtonUp(0)){
 			if(greenBlocks.Count < 10){
-				createBlock(4, "4_blocks/4_g_blocks1");
+				createBlock(4, "4_blocks/4_g_blocks1", "green");
 			}
 			else{
 				Debug.Log("That's 10 already, fool");
@@ -236,7 +280,7 @@ public class LevelEditor : MonoBehaviour {
 
 		if(GUI.Button(new Rect(x,y,w,h), "4y") && Input.GetMouseButtonUp(0)){
 			if(yellowBlocks.Count < 10){
-				createBlock(4, "4_blocks/4_y_blocks1");
+				createBlock(4, "4_blocks/4_y_blocks1", "yellow");
 			}
 			else{
 				Debug.Log("That's 10 already, fool");
@@ -249,6 +293,22 @@ public class LevelEditor : MonoBehaviour {
 		}
 
 	}//DoWindow
+
+	private void deleteCurrent(){
+		GameObject go = new GameObject();
+		foreach(GameObject block in allBlocks){
+			if(block.GetComponent<PositionBlock>().hasFocus){
+				Destroy(go);
+				go = block;
+			}
+		}
+		allBlocks.Remove(go);
+		blueBlocks.Remove(go);
+		redBlocks.Remove(go);
+		yellowBlocks.Remove(go);
+		greenBlocks.Remove(go);
+		Destroy(go);
+	}
 
 	private GameObject[] getAllFloors(){
 		GameObject[] floors = GameObject.FindGameObjectsWithTag("floor");
