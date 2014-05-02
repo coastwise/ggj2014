@@ -6,15 +6,19 @@ public class JumpingState : PlayerState {
 	public JumpingState (PlayerController player) : base (player) {}
 
 	public override void OnEnter () { 
-
+		
 		player.gameObject.rigidbody2D.velocity += Vector2.up * player.instantaneousJumpVelocity;
 		player.GetComponent<Animator>().SetTrigger("Jump");
+
+		if(!player._canDoublejump)
+			player.GetComponent<Animator>().SetBool("Land", false);
 
 		player.gameObject.audio.PlayOneShot(player.jumpSound);
 	}
 	
 	override public void Jump () {
 		//Debug.Log("Player " + player.joystick + " Jumping Jump");
+
 		if (player._canDoublejump)
 		{
 			player._canDoublejump = false;
@@ -41,9 +45,8 @@ public class JumpingState : PlayerState {
 
 	override public void HitFloor(){
 		Debug.Log("Player " + player.joystick + " Landed");
+		player.GetComponent<Animator>().SetBool("Land", true);
 		player.EnterState(typeof(StandingState));
-
-		player.GetComponent<Animator>().SetTrigger("Land");
 	}
 
 	override public void HitWall () {
