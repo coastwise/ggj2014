@@ -67,6 +67,10 @@ public class BoomerangController : MonoBehaviour
 				if (!player.isInvincible) player.EnterState(typeof(DyingState));
 				rigidbody2D.gravityScale = 0.1f;
 				_isActive = false;
+
+				_owner.GetComponent<PlayerController>().killcount++;
+
+				GameObject.Find ("killcount" + _owner.GetComponent<PlayerController>().joystick).GetComponent<GUIText>().text = "x" + _owner.GetComponent<PlayerController>().killcount;
 			}
 		}
 		else

@@ -69,6 +69,9 @@ public class JumpingState : PlayerState {
 			if (!other.isInvincible) other.EnterState(typeof(DyingState));
 
 			player.EnterState(typeof(StompingState));
+			player.killcount++;
+			GameObject.Find ("killcount" + player.joystick).GetComponent<GUIText>().text = "x" + player.killcount;
+
 		}
 	}
 

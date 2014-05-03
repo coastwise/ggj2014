@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour {
 
 	public float respawnTimeout = 2f; // seconds
 
-	public Vector2 wallJumpInstantaneousVelocityDir = Vector2.one * 6f;
+	public Vector2 wallJumpInstantaneousVelocityDir = Vector2.one * 5f;
 
 	private bool _wallRight;
 	public bool wallRight {
@@ -48,6 +48,8 @@ public class PlayerController : MonoBehaviour {
 
 	public int _fireableBoomerangs = 3;
 	public GameObject _boomerangPrefab;
+
+	public int killcount = 0;
 
 	void Start () {
 		name = "Player " + joystick;
