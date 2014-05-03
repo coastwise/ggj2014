@@ -30,6 +30,7 @@ public class JumpingState : PlayerState {
 	override public void Left () {
 		float vx = player.rigidbody2D.velocity.x - player.horizontalAirAcceleration;
 		vx = Mathf.Clamp(vx, -player.maxAirHorizontalVelocity, player.maxAirHorizontalVelocity);
+
 		player.rigidbody2D.velocity = new Vector2(vx, player.rigidbody2D.velocity.y);
 	}
 	
@@ -57,6 +58,7 @@ public class JumpingState : PlayerState {
 		float deltaY = player.transform.position.y - coll.transform.position.y;
 		Debug.Log("delta y " + deltaY);
 		if (deltaY > 0.5f) {
+			//coll.gameObject.GetComponent<PlayerController>();
 			Debug.Log(player.name + " stomped " + coll.gameObject.name);
 
 			PlayerController other = coll.gameObject.GetComponent<PlayerController>();
@@ -67,10 +69,9 @@ public class JumpingState : PlayerState {
 	}
 
 	public override void Update () {
-		if (player.rigidbody2D.velocity.y > player.maxGroundVelocity * 4f) {
-			player.rigidbody2D.velocity = player.rigidbody2D.velocity.normalized * player.maxGroundVelocity * 4f;
-		}
-
+		float vy = player.rigidbody2D.velocity.y;
+		vy = Mathf.Clamp (vy, -player.maxAirVerticalVelocity, player.maxAirVerticalVelocity);
+		player.rigidbody2D.velocity = new Vector2(player.rigidbody2D.velocity.x, vy);
 
 		player.GetComponent<Animator>().SetFloat("y-velocity", player.rigidbody2D.velocity.y);
 	}

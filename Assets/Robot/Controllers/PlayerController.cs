@@ -19,17 +19,18 @@ public class PlayerController : MonoBehaviour {
 	public AudioClip wallJumpSound;
 
 	public float groundAcceleration = 2.6f;
-	public float maxGroundVelocity = 16f;
+	public float maxGroundVelocity = 8f;
 
-	public float instantaneousJumpVelocity = 10f;
-	public float horizontalAirAcceleration = 0.3f;
-	public float maxAirHorizontalVelocity = 16f;
+	public float instantaneousJumpVelocity = 8f;
+	public float horizontalAirAcceleration = 0.1f;
+	public float maxAirHorizontalVelocity = 8f;
+	public float maxAirVerticalVelocity = 14f;
 
 	public float stompingJumpTimeout = 0.2f; // seconds
 
 	public float respawnTimeout = 2f; // seconds
 
-	public Vector2 wallJumpInstantaneousVelocityDir = Vector2.one * 10f;
+	public Vector2 wallJumpInstantaneousVelocityDir = Vector2.one * 6f;
 
 	private bool _wallRight;
 	public bool wallRight {
@@ -116,32 +117,32 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Update () {
-		Debug.Log (currentState.GetType().ToString());
+
 		// check my input and call state methods
 		if (Input.GetButtonDown("X_"+joystick) && _fireableBoomerangs > 0)
 		{
 			float xAxis = Input.GetAxis("L_XAxis_"+joystick);
+			if (xAxis > 0.0f)
+				xAxis = 1.0f;
+			else if (xAxis < 0.0f)
+				xAxis = -1.0f;
+
 			float yAxis = Input.GetAxis("L_YAxis_"+joystick);
+			if (yAxis > 0.0f)
+				yAxis = 1.0f;
+			else if (yAxis < 0.0f)
+				yAxis = -1.0f;
 
-			//Vector3 projectileDirection = EightProjectileDirection(xAxis, -yAxis);
 			Vector3 projectileDirection = new Vector3(xAxis, -yAxis, 0.0f).normalized;
+			if (projectileDirection == Vector3.zero)
+				projectileDirection += Vector3.right * gameObject.transform.localScale.x;
 
-			if (projectileDirection == Vector3.zero) {
-				projectileDirection = Vector3.right * transform.localScale.x;
-			}
-
-			if (projectileDirection != Vector3.zero)
-			{
-				float offset = 0.0f;
+				float offset = 0.8f;
 				if (yAxis == 0.0f)
-					offset = 0.0f;
+					offset = 0.5f;
 				GameObject boomerang = (GameObject)Instantiate(_boomerangPrefab, transform.position + (projectileDirection * offset), Quaternion.identity);
 				boomerang.GetComponent<BoomerangController>().CreateBoomerang(this.gameObject, projectileDirection);
 				_fireableBoomerangs -= 1;
-			} else {
-
-			}
-
 
 			gameObject.audio.PlayOneShot(throwSound);
 		}
@@ -164,20 +165,6 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		currentState.Update();
-	}
-
-	Vector3 EightProjectileDirection (float x, float y) {
-		if (x > 0.0f)
-			x = 1.0f;
-		else if (x < 0.0f)
-			x = -1.0f;
-
-		if (y > 0.0f)
-			y = 1.0f;
-		else if (y < 0.0f)
-			y = -1.0f;
-
-		return new Vector3(x,y,0).normalized;
 	}
 
 	public void FinishedExploding () {
