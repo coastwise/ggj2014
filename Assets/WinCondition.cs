@@ -34,7 +34,7 @@ public class WinCondition : MonoBehaviour {
 			    Input.GetButtonDown("Start_4")) {
 
 				Time.timeScale = 1;	
-				Application.LoadLevel("level_01");
+				Application.LoadLevel(StageSelect.chosenLevel);
 
 			}
 
