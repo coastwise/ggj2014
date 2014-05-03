@@ -11,6 +11,10 @@ public class JumpingState : PlayerState {
 		player.GetComponent<Animator>().SetTrigger("Jump");
 
 		player.gameObject.audio.PlayOneShot(player.jumpSound);
+
+		if(!player._canDoublejump){
+			player.GetComponent<Animator>().SetBool("Land", false);
+		}
 	}
 	
 	override public void Jump () {
@@ -43,7 +47,7 @@ public class JumpingState : PlayerState {
 		Debug.Log("Player " + player.joystick + " Landed");
 		player.EnterState(typeof(StandingState));
 
-		player.GetComponent<Animator>().SetTrigger("Land");
+		player.GetComponent<Animator>().SetBool("Land", true);
 	}
 
 	override public void HitWall () {
