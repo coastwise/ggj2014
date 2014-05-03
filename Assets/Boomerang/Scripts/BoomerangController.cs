@@ -19,6 +19,19 @@ public class BoomerangController : MonoBehaviour
 	{
 		_owner = parent;
 		this.gameObject.layer = parent.layer; /* red weapon layer is 4 higher than red player */
+
+		if (gameObject.layer == LayerMask.NameToLayer ("red player")) {
+			gameObject.layer = LayerMask.NameToLayer ("red boomerang");
+		} else if (gameObject.layer == LayerMask.NameToLayer ("yellow player")) {
+			gameObject.layer = LayerMask.NameToLayer ("yellow boomerang");
+			
+		}else if (gameObject.layer == LayerMask.NameToLayer ("green player")) {
+			gameObject.layer = LayerMask.NameToLayer ("green boomerang");
+			
+		}else if (gameObject.layer == LayerMask.NameToLayer ("blue player")) {
+			gameObject.layer = LayerMask.NameToLayer ("blue boomerang");
+			
+		}
 		_direction = direction;
 		rigidbody2D.gravityScale = 0.005f;
 		_spawnTime = Time.time;
@@ -34,13 +47,13 @@ public class BoomerangController : MonoBehaviour
 		if (!_returning)
 		{
 			float sin = Mathf.Sin(((Time.time - _spawnTime) * 4.0f) + Mathf.Deg2Rad * 90.0f);
-			transform.Translate(_direction * sin * Time.deltaTime * 24.0f, Space.World);
+			transform.Translate(_direction * sin * Time.deltaTime * 14.0f, Space.World);
 			Debug.Log(_direction);
 			if (sin <= 0)
 				_returning = true;
 		}
 		else
-			transform.Translate((_owner.transform.position - transform.position).normalized * Time.deltaTime * 12.0f, Space.World);
+			transform.Translate((_owner.transform.position - transform.position).normalized * Time.deltaTime * 14.0f, Space.World);
 	}
 
 	void OnCollisionEnter2D(Collision2D collision)
@@ -63,5 +76,9 @@ public class BoomerangController : MonoBehaviour
 			_isActive = false;
 		}
 		gameObject.audio.PlayOneShot(hitSound);
+	}
+
+	public GameObject Owner () {
+		return gameObject;
 	}
 }

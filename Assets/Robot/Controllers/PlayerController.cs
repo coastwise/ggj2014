@@ -132,15 +132,16 @@ public class PlayerController : MonoBehaviour {
 				yAxis = -1.0f;
 
 			Vector3 projectileDirection = new Vector3(xAxis, -yAxis, 0.0f).normalized;
-			if (projectileDirection != Vector3.zero)
-			{
+			if (projectileDirection == Vector3.zero)
+				projectileDirection += Vector3.right * gameObject.transform.localScale.x;
+
 				float offset = 0.8f;
 				if (yAxis == 0.0f)
 					offset = 0.5f;
 				GameObject boomerang = (GameObject)Instantiate(_boomerangPrefab, transform.position + (projectileDirection * offset), Quaternion.identity);
 				boomerang.GetComponent<BoomerangController>().CreateBoomerang(this.gameObject, projectileDirection);
 				_fireableBoomerangs -= 1;
-			}
+
 			gameObject.audio.PlayOneShot(throwSound);
 		}
 
