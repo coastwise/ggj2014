@@ -9,6 +9,8 @@ public enum Levels{
 
 public class StageSelect : MonoBehaviour {
 
+	public static string chosenLevel;
+
 	public Texture _level_1_texture;
 	public Texture _level_2_texture;
 
@@ -19,7 +21,7 @@ public class StageSelect : MonoBehaviour {
 
 
 	private GUIStyle subtitle_style;
-	private int[] _levels;
+	private string[] _levels;
 	private int _selectedIndex;
 	private int _numLevels;
 
@@ -30,7 +32,7 @@ public class StageSelect : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		_levels = new int[] {1,2};
+		_levels = new string[] {"level_01","level_03"};
 		_selectedIndex = (int)Levels.level1;
 		_numLevels = _levels.Length;
 
@@ -181,11 +183,13 @@ public class StageSelect : MonoBehaviour {
 		   Input.GetButtonDown("Start_3") || 
 		   Input.GetButtonDown("Start_4")
 		   ){
-			if(_levels[_selectedIndex] == 1){
+			if(_levels[_selectedIndex] == "level_01"){
+				chosenLevel = "level_01";
 				Application.LoadLevel("level_01");
 			}
-			else if(_levels[_selectedIndex] == 2){
-				Application.LoadLevel("level_02");
+			else if(_levels[_selectedIndex] == "level_03"){
+				chosenLevel = "level_03";
+				Application.LoadLevel("level_03");
 			}
 		}
 
