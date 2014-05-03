@@ -25,7 +25,8 @@ public class CharacterSelect : MonoBehaviour {
 		subtitle_style = new GUIStyle();
 		subtitle_style.normal.textColor = Color.white;
 		subtitle_style.alignment = TextAnchor.MiddleCenter;
-		subtitle_style.fontStyle = FontStyle.Normal;
+		subtitle_style.fontStyle = FontStyle.Bold;
+		subtitle_style.font = (Font)Resources.Load ("VT323-Regular");
 		subtitle_style.fontSize = 40;
 
 		if(yellowPlayer){
