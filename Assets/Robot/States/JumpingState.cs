@@ -71,6 +71,7 @@ public class JumpingState : PlayerState {
 			player.EnterState(typeof(StompingState));
 			player.killcount++;
 			GameObject.Find ("killcount" + player.joystick).GetComponent<GUIText>().text = "x" + player.killcount;
+			GameObject.Find ("Win").GetComponent<WinCondition>().CheckWinner();
 
 		}
 	}

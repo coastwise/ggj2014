@@ -71,6 +71,8 @@ public class BoomerangController : MonoBehaviour
 				_owner.GetComponent<PlayerController>().killcount++;
 
 				GameObject.Find ("killcount" + _owner.GetComponent<PlayerController>().joystick).GetComponent<GUIText>().text = "x" + _owner.GetComponent<PlayerController>().killcount;
+				
+				GameObject.Find ("Win").GetComponent<WinCondition>().CheckWinner();
 			}
 		}
 		else
