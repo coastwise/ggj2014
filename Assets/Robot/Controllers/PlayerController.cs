@@ -19,17 +19,18 @@ public class PlayerController : MonoBehaviour {
 	public AudioClip wallJumpSound;
 
 	public float groundAcceleration = 2.6f;
-	public float maxGroundVelocity = 16f;
+	public float maxGroundVelocity = 8f;
 
-	public float instantaneousJumpVelocity = 10f;
-	public float horizontalAirAcceleration = 0.3f;
-	public float maxAirHorizontalVelocity = 16f;
+	public float instantaneousJumpVelocity = 8f;
+	public float horizontalAirAcceleration = 0.1f;
+	public float maxAirHorizontalVelocity = 8f;
+	public float maxAirVerticalVelocity = 14f;
 
 	public float stompingJumpTimeout = 0.2f; // seconds
 
 	public float respawnTimeout = 2f; // seconds
 
-	public Vector2 wallJumpInstantaneousVelocityDir = Vector2.one * 10f;
+	public Vector2 wallJumpInstantaneousVelocityDir = Vector2.one * 6f;
 
 	private bool _wallRight;
 	public bool wallRight {
@@ -116,6 +117,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Update () {
+
 		// check my input and call state methods
 		if (Input.GetButtonDown("X_"+joystick) && _fireableBoomerangs > 0)
 		{
