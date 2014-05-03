@@ -62,7 +62,7 @@ public class StartScreen : MonoBehaviour {
 
 	IEnumerator LoadCharacterSelectCoroutine () {
 		yield return new WaitForSeconds(1);
-		Application.LoadLevel("level_01");
+		Application.LoadLevel("CharacterSelect");
 		// Load Character Select Scene
 	}
 }

@@ -27,10 +27,39 @@ public class CharacterSelect : MonoBehaviour {
 		subtitle_style.alignment = TextAnchor.MiddleCenter;
 		subtitle_style.fontStyle = FontStyle.Normal;
 		subtitle_style.fontSize = 40;
+
+		if(yellowPlayer){
+			p1.guiTexture.enabled = true;
+		}
+		else{
+			p1.guiTexture.enabled = false;
+		}
+		
+		if(greenPlayer){
+			p2.guiTexture.enabled = true;
+		}
+		else{
+			p2.guiTexture.enabled = false;
+		}
+		
+		if(redPlayer){
+			p3.guiTexture.enabled = true;
+		}
+		else{
+			p3.guiTexture.enabled = false;
+		}
+		
+		if(bluePlayer){
+			p4.guiTexture.enabled = true;
+		}
+		else{
+			p4.guiTexture.enabled = false;
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
 		if(Input.GetButtonDown("Start_1") && !yellowPlayer){
 			yellowPlayer = true;
 			p1.guiTexture.enabled = true;
@@ -50,21 +79,21 @@ public class CharacterSelect : MonoBehaviour {
 		else{
 			// Proceed
 			if(Input.GetButtonDown("Start_1") && yellowPlayer && (greenPlayer || redPlayer || bluePlayer)){
-				// Go to settings
-				Debug.Log("success");
+				GoToStageSelect();
 			}
 			else if(Input.GetButtonDown("Start_2") && greenPlayer && (yellowPlayer || redPlayer || bluePlayer)){
-				// Go to settings
-				Debug.Log("success");
+				GoToStageSelect();
 			}
 			else if(Input.GetButtonDown("Start_3") && redPlayer && (yellowPlayer || greenPlayer || bluePlayer)){
-				// Go to settings
-				Debug.Log("success");
+				GoToStageSelect();
 			}
 			else if(Input.GetButtonDown("Start_2") && bluePlayer && (yellowPlayer || greenPlayer || redPlayer)){
-				// Go to settings
-				Debug.Log("success");
+				GoToStageSelect();
 			}
+		}
+
+		if(Input.GetKeyDown(KeyCode.KeypadEnter)){
+			GoToStageSelect();
 		}
 	}
 
@@ -76,5 +105,9 @@ public class CharacterSelect : MonoBehaviour {
 		float padding = 0.02f * Screen.height;
 		
 		GUI.TextArea(new Rect(x,y,w,h), "Press start to join", subtitle_style);
+	}
+
+	private void GoToStageSelect(){
+		Application.LoadLevel("StageSelect");
 	}
 }
