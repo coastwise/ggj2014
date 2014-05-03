@@ -13,8 +13,8 @@ public class GuiGameObject : MonoBehaviour
 
 	void Start()
 	{
-		Screen.SetResolution(512,288,true);
-		Screen.SetResolution(1024,576,true);
+		//Screen.SetResolution(512,288,true);
+		//Screen.SetResolution(1024,576,true);
 		_pointerTextures = new Texture[] {_textureP1Pointer, _textureP2Pointer, _textureP3Pointer, _textureP4Pointer};
 
 		PlayerController[] players = (PlayerController[])GameObject.FindObjectsOfType(typeof(PlayerController));

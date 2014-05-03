@@ -176,7 +176,11 @@ public class StageSelect : MonoBehaviour {
 		CheckForUp();
 
 		// Start to proceed
-		if(Input.GetButtonDown("Start_1")){
+		if(Input.GetButtonDown("Start_1") || 
+		   Input.GetButtonDown("Start_2") || 
+		   Input.GetButtonDown("Start_3") || 
+		   Input.GetButtonDown("Start_4")
+		   ){
 			if(_levels[_selectedIndex] == 1){
 				Application.LoadLevel("level_01");
 			}
