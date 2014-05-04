@@ -34,11 +34,23 @@ public class WinCondition : MonoBehaviour {
 			    Input.GetButtonDown("Start_2") ||
 			    Input.GetButtonDown("Start_3") ||
 			    Input.GetButtonDown("Start_4")) {
-
+				
 				Time.timeScale = 1;	
 				Application.LoadLevel(StageSelect.chosenLevel);
-
+				
 			}
+			
+			if (Input.GetButtonDown("B_1") ||
+			    Input.GetButtonDown("B_2") ||
+			    Input.GetButtonDown("B_3") ||
+			    Input.GetButtonDown("B_4")) {
+				
+				Time.timeScale = 1;	
+				Application.LoadLevel("CharacterSelect");
+				
+			}
+			
+
 
 
 		}
