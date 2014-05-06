@@ -22,8 +22,8 @@ public class GuiGameObject : MonoBehaviour
 		_playerControllers = new PlayerController[players.Length];
 
 		foreach (PlayerController player in players) {
-			_playerTransforms[player.joystick - 1] = player.transform;
-			_playerControllers[player.joystick - 1] = player.GetComponent<PlayerController>();
+			_playerTransforms[player.Joystick - 1] = player.transform;
+			_playerControllers[player.Joystick - 1] = player.GetComponent<PlayerController>();
 		}
 	}
 

@@ -14,7 +14,7 @@ public class DyingState : PlayerState {
 		player.collider2D.enabled = false;
 		player.rigidbody2D.isKinematic = true;
 
-		player.gameObject.audio.PlayOneShot(player.explosionSound);
+		player.PlaySound (SoundEffects.Explosion);
 
 		player._fireableBoomerangs = 0;
 	}

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DoublejumpExplosion : MonoBehaviour
+public class JumpExplosion : MonoBehaviour
 {
 	private float _timer = 0.4f;
 

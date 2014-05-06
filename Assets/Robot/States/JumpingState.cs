@@ -10,25 +10,27 @@ public class JumpingState : PlayerState {
 		player.gameObject.rigidbody2D.velocity += Vector2.up * player.instantaneousJumpVelocity;
 		player.GetComponent<Animator>().SetTrigger("Jump");
 
-		player.gameObject.audio.PlayOneShot(player.jumpSound);
+		player.PlaySound (SoundEffects.Jump);
 
-		if(!player._canDoublejump){
+		if(!player.MultiJump.enabled){
 			player.GetComponent<Animator>().SetBool("Land", false);
 		}
 	}
 	
 	override public void Jump () {
 		//Debug.Log("Player " + player.joystick + " Jumping Jump");
-		if (player._canDoublejump)
+
+
+
+		if (player.MultiJump.enabled)
 		{
-			player._canDoublejump = false;
-			player.SpawnDoublejumpExplosion();
+			player.GetComponent<MultiJump>().SpawnDoublejumpExplosion();
 			player.EnterState(typeof(JumpingState));
 		}
 	}
 	
 	override public void Throw () {
-		Debug.Log("Player " + player.joystick + " Jumping Throw");
+		Debug.Log("Player " + player.Joystick + " Jumping Throw");
 	}
 
 	override public void Left () {
@@ -45,7 +47,7 @@ public class JumpingState : PlayerState {
 	}
 
 	override public void HitFloor(){
-		Debug.Log("Player " + player.joystick + " Landed");
+		Debug.Log("Player " + player.Joystick + " Landed");
 		player.EnterState(typeof(StandingState));
 
 		player.GetComponent<Animator>().SetBool("Land", true);
@@ -70,7 +72,7 @@ public class JumpingState : PlayerState {
 
 			player.EnterState(typeof(StompingState));
 			player.killcount++;
-			GameObject.Find ("killcount" + player.joystick).GetComponent<GUIText>().text = "x" + player.killcount;
+			GameObject.Find ("killcount" + player.Joystick).GetComponent<GUIText>().text = "x" + player.killcount;
 			GameObject.Find ("Win").GetComponent<WinCondition>().CheckWinner();
 
 		}

@@ -9,7 +9,7 @@ public class StandingState : PlayerState {
 
 	public override void OnEnter ()
 	{
-		player._canDoublejump = true;
+		player.MultiJump.enabled = true;
 		Animator animator = player.GetComponent<Animator>();
 	}
 
@@ -29,13 +29,13 @@ public class StandingState : PlayerState {
 			Debug.Log("Collider name: " + hitR.collider.name);
 			player.EnterState(typeof(StandingState));
 		} else {
-			Debug.Log("Player " + player.joystick + " Standing Jump");
+			Debug.Log("Player " + player.Joystick + " Standing Jump");
 			player.EnterState(typeof(JumpingState));
 		}
 	}
 
 	override public void Throw () {
-		Debug.Log("Player " + player.joystick + " Standing Throw");
+		Debug.Log("Player " + player.Joystick + " Standing Throw");
 	}
 
 	override public void Left () {

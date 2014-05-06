@@ -4,19 +4,21 @@ using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour {
 
-	public int joystick;
+	private MultiJump _multiJump;
+	public MultiJump MultiJump {
+		get { return _multiJump; }
+	}
+
+	private int _joystick;
+	public int Joystick
+	{
+		get { return _joystick; }
+		set { _joystick = value;}
+	}
 
 	public List<Transform> spawnPoints;
 
-	public GameObject _doublejumpExplosion;
-	public bool _canDoublejump = false;
-
-	//public int color;
-
-	public AudioClip explosionSound;
-	public AudioClip jumpSound;
-	public AudioClip throwSound;
-	public AudioClip wallJumpSound;
+	private AudioClip[] sounds;
 
 	public float groundAcceleration = 2.6f;
 	public float maxGroundVelocity = 8f;
@@ -51,8 +53,17 @@ public class PlayerController : MonoBehaviour {
 
 	public int killcount = 0;
 
+	void Awake () {
+		_multiJump = GetComponent<MultiJump> ();
+		sounds = new AudioClip[4];
+		sounds [(int)SoundEffects.Explosion] = 	(AudioClip)Resources.Load ("explosion");
+		sounds [(int)SoundEffects.Jump] = 		(AudioClip)Resources.Load ("jump");
+		sounds [(int)SoundEffects.Throw] = 		(AudioClip)Resources.Load ("boomerang1");
+		sounds [(int)SoundEffects.Explosion] = 	(AudioClip)Resources.Load ("walljump");
+	}
+
 	void Start () {
-		name = "Player " + joystick;
+		name = "Player " + Joystick;
 
 		cachedPlayerTint = gameObject.GetComponent<SpriteRenderer>().color;
 
@@ -64,11 +75,6 @@ public class PlayerController : MonoBehaviour {
 		states.Add(typeof(FallingState), new FallingState(this));
 		states.Add(typeof(WallSlidingState), new WallSlidingState(this));
 		states.Add(typeof(DyingState), new DyingState(this)); 
-
-		explosionSound = (AudioClip)Resources.Load("explosion");
-		jumpSound = (AudioClip)Resources.Load("jump");
-		throwSound = (AudioClip)Resources.Load ("boomerang1");
-		wallJumpSound = (AudioClip)Resources.Load("walljump");
 		
 		// enter the initial state
 		currentState = states[typeof(StandingState)];
@@ -76,7 +82,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public void EnterState (System.Type newState) {
-		Debug.Log("Player " + joystick + " transitioning from " + currentState.GetType() + " to " + newState);
+		Debug.Log("Player " + Joystick + " transitioning from " + currentState.GetType() + " to " + newState);
 		currentState.OnExit();
 		currentState = states[newState];
 		currentState.OnEnter();
@@ -114,22 +120,20 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	public void SpawnDoublejumpExplosion() {
-		Instantiate(_doublejumpExplosion, transform.position + (Vector3.down * 0.2f), Quaternion.identity);
-	}
+
 
 	void Update () {
 
 		// check my input and call state methods
-		if (Input.GetButtonDown("X_"+joystick) && _fireableBoomerangs > 0)
+		if (Input.GetButtonDown("X_"+Joystick) && _fireableBoomerangs > 0)
 		{
-			float xAxis = Input.GetAxis("L_XAxis_"+joystick);
+			float xAxis = Input.GetAxis("L_XAxis_"+Joystick);
 			if (xAxis > 0.0f)
 				xAxis = 1.0f;
 			else if (xAxis < 0.0f)
 				xAxis = -1.0f;
 
-			float yAxis = Input.GetAxis("L_YAxis_"+joystick);
+			float yAxis = Input.GetAxis("L_YAxis_"+Joystick);
 			if (yAxis > 0.0f)
 				yAxis = 1.0f;
 			else if (yAxis < 0.0f)
@@ -146,10 +150,10 @@ public class PlayerController : MonoBehaviour {
 				boomerang.GetComponent<BoomerangController>().CreateBoomerang(this.gameObject, projectileDirection);
 				_fireableBoomerangs -= 1;
 
-			gameObject.audio.PlayOneShot(throwSound);
+			PlaySound(SoundEffects.Throw);
 		}
 
-		if (Input.GetButtonDown("A_"+joystick))
+		if (Input.GetButtonDown("A_"+Joystick))
 		{
 //			if ((currentState.GetType() == typeof(JumpingState) || currentState.GetType() == typeof(FallingState)) && _canDoublejump)
 //			{
@@ -158,9 +162,9 @@ public class PlayerController : MonoBehaviour {
 			currentState.Jump();
 		}
 
-		if (Input.GetAxis("L_XAxis_"+joystick) > 0) {
+		if (Input.GetAxis("L_XAxis_"+Joystick) > 0) {
 			currentState.Right();
-		} else if (Input.GetAxis("L_XAxis_"+joystick) < 0) {
+		} else if (Input.GetAxis("L_XAxis_"+Joystick) < 0) {
 			currentState.Left();
 		} else {
 			currentState.Idle();
@@ -191,4 +195,14 @@ public class PlayerController : MonoBehaviour {
 		isInvincible = false;
 	}
 
+	public void PlaySound (SoundEffects sfx) {
+		gameObject.audio.PlayOneShot (sounds [(int)sfx]);
+	}
 }
+
+public enum SoundEffects {
+	Explosion,
+	Jump,
+	Throw,
+	WallJump
+};

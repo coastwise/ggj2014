@@ -61,7 +61,7 @@ public class WinCondition : MonoBehaviour {
 			if (player.killcount >= counter) {
 				winner = player;
 
-				playerWinnerText.text = "Player " + winner.joystick;
+				playerWinnerText.text = "Player " + winner.Joystick;
 
 				TriggerGameEnd();
 			}

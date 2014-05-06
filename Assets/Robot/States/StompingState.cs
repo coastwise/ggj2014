@@ -8,7 +8,7 @@ public class StompingState : StandingState {
 	float countdown;
 
 	override public void Jump () {
-		Debug.Log("Player " + player.joystick + " Stomping Jump");
+		Debug.Log("Player " + player.Joystick + " Stomping Jump");
 		player.EnterState(typeof(JumpingState));
 	}
 

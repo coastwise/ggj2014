@@ -18,7 +18,7 @@ public class WallSlidingState : FallingState {
 		player.EnterState(typeof(FallingState));
 		player.GetComponent<Animator>().SetTrigger("Jump");
 
-		player.gameObject.audio.PlayOneShot(player.wallJumpSound);
+		player.PlaySound (SoundEffects.WallJump);
 	}
 
 }
