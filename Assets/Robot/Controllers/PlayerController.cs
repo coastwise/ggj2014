@@ -19,39 +19,105 @@ public class PlayerController : MonoBehaviour {
 	public List<Transform> spawnPoints;
 
 	private AudioClip[] sounds;
+	
+	[SerializeField]
+	private float _groundAccel = 2.6f; // float instead of vector because on ground (only X)
+	public float GroundAcceleration {
+		get { return _groundAccel;}
+	}
 
-	public float groundAcceleration = 2.6f;
-	public float maxGroundVelocity = 8f;
+	[SerializeField]
+	private float _maxGroundVel = 8f; // float instead of vector because on ground (only X)
+	public float MaximumGroundVelocity {
+		get { return _maxGroundVel; }
+	}
 
-	public float instantaneousJumpVelocity = 8f;
-	public float horizontalAirAcceleration = 0.1f;
-	public float maxAirHorizontalVelocity = 8f;
-	public float maxAirVerticalVelocity = 14f;
+	[SerializeField]
+	private float _instantJumpVel = 8f; // float instead of vector because straight jump (only Y)
+	public float InstantJumpVelocity {
+		get { return _instantJumpVel; }
+	}
 
-	public float stompingJumpTimeout = 0.2f; // seconds
+	[SerializeField]
+	private Vector2 _airAccel = new Vector2(0,0.1f);
+	public Vector2 AirAcceleration {
+		get { return _airAccel; }
+		set { _airAccel = value; }
+	}
+	public float HorizontalAirAcceleration { 
+		get { return _airAccel.x; }
+	}
+	public float VerticalAirAcceleration {
+		get { return _airAccel.y; }
+	}
 
-	public float respawnTimeout = 2f; // seconds
+	[SerializeField]
+	private Vector2 _maxAirVel = new Vector2 (8, 14);
+	public Vector2 MaximumAirVelocity {
+		get { return _maxAirVel; }
+		set { _maxAirVel = value; }
+	}
+	public float MaximumHorizontalAirVelocity {
+		get { return _maxAirVel.x; }
+	}
+	public float MaximumVerticalAirVelocity {
+		get { return _maxAirVel.y; }
+	}
 
-	public Vector2 wallJumpInstantaneousVelocityDir = Vector2.one * 5f;
+	[SerializeField]
+	private float _stompJumpTimeout = 0.2f; // seconds
+	public float StompJumpTimeout {
+		get { return _stompJumpTimeout; }
+	}
+
+	[SerializeField]
+	private float _respawnTimeout = 2f; // seconds
+	public float RespawnTimeout {
+		get { return _respawnTimeout; }
+	}
+
+	[SerializeField]
+	private Vector2 _wallJumpInstantVelocity = Vector2.one * 5f;
+	public Vector2 InstantWallJumpVelocity {
+		get { return _wallJumpInstantVelocity; }
+		set { _wallJumpInstantVelocity = value; }
+	}
+
 
 	private bool _wallRight;
 	public bool wallRight {
 		get; private set;
 	}
 
-	public bool isInvincible = false;
+	[SerializeField]
+	private bool _isInvincible = false;
+	public bool Invincible {
+		get { return _isInvincible; }
+		set { _isInvincible = value; }
+	}
 
-	private Color cachedPlayerTint;
+
+	private Color _cachedPlayerTint;
 
 	private Dictionary<System.Type, PlayerState> states;
 	private PlayerState currentState;
 
 	// "is false when preceded by its quotation" is false when preceded by its quotation
 
-	public int _fireableBoomerangs = 3;
+	[SerializeField]
+	private int _fireableBoomerangs = 3;
+	public int FireableBoomerangs {
+		get { return _fireableBoomerangs; }
+		set { _fireableBoomerangs = value; }
+	}
+
 	public GameObject _boomerangPrefab;
 
-	public int killcount = 0;
+	[SerializeField]
+	private int _killcount = 0;
+	public int KillCount {
+		get { return _killcount; }
+	}
 
 	void Awake () {
 		_multiJump = GetComponent<MultiJump> ();
@@ -65,7 +131,7 @@ public class PlayerController : MonoBehaviour {
 	void Start () {
 		name = "Player " + Joystick;
 
-		cachedPlayerTint = gameObject.GetComponent<SpriteRenderer>().color;
+		_cachedPlayerTint = gameObject.GetComponent<SpriteRenderer>().color;
 
 		// initialize states once (no gc)
 		states = new Dictionary<System.Type, PlayerState>();
@@ -174,12 +240,12 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public void FinishedExploding () {
-		gameObject.GetComponent<SpriteRenderer>().color = cachedPlayerTint;
+		gameObject.GetComponent<SpriteRenderer>().color = _cachedPlayerTint;
 		gameObject.renderer.enabled = false;
 	}
 
 	public void Respawn () {
-		isInvincible = true;
+		_isInvincible = true;
 		gameObject.renderer.enabled = true;
 		transform.position = spawnPoints[Random.Range(0,spawnPoints.Count)].position;
 		StartCoroutine(BlinkForAWhile());
@@ -192,11 +258,15 @@ public class PlayerController : MonoBehaviour {
 			yield return null;
 			gameObject.renderer.enabled = true;
 		}
-		isInvincible = false;
+		_isInvincible = false;
 	}
 
 	public void PlaySound (SoundEffects sfx) {
 		gameObject.audio.PlayOneShot (sounds [(int)sfx]);
+	}
+
+	public void IncrementKill () {
+		_killcount++;
 	}
 }
 

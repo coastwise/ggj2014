@@ -58,7 +58,7 @@ public class WinCondition : MonoBehaviour {
 
 	public void CheckWinner () {
 		foreach (PlayerController player in players) {
-			if (player.killcount >= counter) {
+			if (player.KillCount >= counter) {
 				winner = player;
 
 				playerWinnerText.text = "Player " + winner.Joystick;

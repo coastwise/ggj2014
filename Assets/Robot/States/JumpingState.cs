@@ -7,7 +7,7 @@ public class JumpingState : PlayerState {
 
 	public override void OnEnter () { 
 
-		player.gameObject.rigidbody2D.velocity += Vector2.up * player.instantaneousJumpVelocity;
+		player.gameObject.rigidbody2D.velocity += Vector2.up * player.InstantJumpVelocity;
 		player.GetComponent<Animator>().SetTrigger("Jump");
 
 		player.PlaySound (SoundEffects.Jump);
@@ -34,15 +34,15 @@ public class JumpingState : PlayerState {
 	}
 
 	override public void Left () {
-		float vx = player.rigidbody2D.velocity.x - player.horizontalAirAcceleration;
-		vx = Mathf.Clamp(vx, -player.maxAirHorizontalVelocity, player.maxAirHorizontalVelocity);
+		float vx = player.rigidbody2D.velocity.x - player.AirAcceleration.x;
+		vx = Mathf.Clamp(vx, -player.MaximumAirVelocity.x, player.MaximumAirVelocity.x);
 
 		player.rigidbody2D.velocity = new Vector2(vx, player.rigidbody2D.velocity.y);
 	}
 	
 	override public void Right () {
-		float vx = player.rigidbody2D.velocity.x + player.horizontalAirAcceleration;
-		vx = Mathf.Clamp(vx, -player.maxAirHorizontalVelocity, player.maxAirHorizontalVelocity);
+		float vx = player.rigidbody2D.velocity.x + player.AirAcceleration.x;
+		vx = Mathf.Clamp(vx, -player.MaximumAirVelocity.x, player.MaximumAirVelocity.x);
 		player.rigidbody2D.velocity = new Vector2(vx, player.rigidbody2D.velocity.y);
 	}
 
@@ -68,11 +68,11 @@ public class JumpingState : PlayerState {
 			Debug.Log(player.name + " stomped " + coll.gameObject.name);
 
 			PlayerController other = coll.gameObject.GetComponent<PlayerController>();
-			if (!other.isInvincible) other.EnterState(typeof(DyingState));
+			if (!other.Invincible) other.EnterState(typeof(DyingState));
 
 			player.EnterState(typeof(StompingState));
-			player.killcount++;
-			GameObject.Find ("killcount" + player.Joystick).GetComponent<GUIText>().text = "x" + player.killcount;
+			player.IncrementKill();
+			GameObject.Find ("killcount" + player.Joystick).GetComponent<GUIText>().text = "x" + player.KillCount;
 			GameObject.Find ("Win").GetComponent<WinCondition>().CheckWinner();
 
 		}
@@ -80,7 +80,7 @@ public class JumpingState : PlayerState {
 
 	public override void Update () {
 		float vy = player.rigidbody2D.velocity.y;
-		vy = Mathf.Clamp (vy, -player.maxAirVerticalVelocity, player.maxAirVerticalVelocity);
+		vy = Mathf.Clamp (vy, -player.MaximumAirVelocity.y, player.MaximumAirVelocity.y);
 		player.rigidbody2D.velocity = new Vector2(player.rigidbody2D.velocity.x, vy);
 
 		player.GetComponent<Animator>().SetFloat("y-velocity", player.rigidbody2D.velocity.y);

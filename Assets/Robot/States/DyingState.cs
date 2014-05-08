@@ -9,14 +9,14 @@ public class DyingState : PlayerState {
 
 	public override void OnEnter () {
 		player.GetComponent<Animator>().SetTrigger("Explode");
-		countdown = player.respawnTimeout;
+		countdown = player.RespawnTimeout;
 
 		player.collider2D.enabled = false;
 		player.rigidbody2D.isKinematic = true;
 
 		player.PlaySound (SoundEffects.Explosion);
 
-		player._fireableBoomerangs = 0;
+		player.FireableBoomerangs = 0;
 	}
 
 	override public void Update () {
@@ -25,7 +25,7 @@ public class DyingState : PlayerState {
 			Debug.Log("Respawn");
 			player.collider2D.enabled = true;
 			player.rigidbody2D.isKinematic = false;
-			player._fireableBoomerangs = 3;
+			player.FireableBoomerangs = 3;
 			player.EnterState(typeof(StandingState));
 			player.GetComponent<Animator>().SetTrigger("Respawn");
 			player.Respawn();

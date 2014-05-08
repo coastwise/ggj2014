@@ -61,16 +61,17 @@ public class BoomerangController : MonoBehaviour
 		if (collision.gameObject.tag == "Player") {
 			PlayerController player = collision.gameObject.GetComponent<PlayerController>();
 			if (!_isActive || (_returning && collision.gameObject.Equals(_owner)) ) {
-				player._fireableBoomerangs += 1;
+				player.FireableBoomerangs += 1;
 				Destroy(this.gameObject);
 			} else {
-				if (!player.isInvincible) player.EnterState(typeof(DyingState));
+				if (!player.Invincible) player.EnterState(typeof(DyingState));
 				rigidbody2D.gravityScale = 0.1f;
 				_isActive = false;
 
-				_owner.GetComponent<PlayerController>().killcount++;
+				_owner.GetComponent<PlayerController>().IncrementKill();
 
-				GameObject.Find ("killcount" + _owner.GetComponent<PlayerController>().Joystick).GetComponent<GUIText>().text = "x" + _owner.GetComponent<PlayerController>().killcount;
+				GameObject.Find ("killcount" + _owner.GetComponent<PlayerController>().Joystick).
+					GetComponent<GUIText>().text = "x" + _owner.GetComponent<PlayerController>().KillCount;
 				
 				GameObject.Find ("Win").GetComponent<WinCondition>().CheckWinner();
 			}

@@ -36,7 +36,7 @@ public class GuiGameObject : MonoBehaviour
 
 			float xOffset = playerPosition.x - 10.0f;
 			float yOffset = (float)Screen.height - playerPosition.y - 78.0f;
-			int tempFireableBoomerangs = _playerControllers[i]._fireableBoomerangs;
+			int tempFireableBoomerangs = _playerControllers[i].FireableBoomerangs;
 			//int tempFireableBoomerangs = 9;
 			int tempCounter = 0;
 			while (tempFireableBoomerangs > 0)

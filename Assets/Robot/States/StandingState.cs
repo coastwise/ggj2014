@@ -39,8 +39,8 @@ public class StandingState : PlayerState {
 	}
 
 	override public void Left () {
-		float vx = player.rigidbody2D.velocity.x - player.groundAcceleration;
-		vx = Mathf.Clamp(vx, -player.maxGroundVelocity, player.maxGroundVelocity);
+		float vx = player.rigidbody2D.velocity.x - player.GroundAcceleration;
+		vx = Mathf.Clamp(vx, -player.MaximumGroundVelocity, player.MaximumGroundVelocity);
 		player.rigidbody2D.velocity = new Vector2(vx, player.rigidbody2D.velocity.y);
 
 		player.transform.localScale = new Vector3(-1,1,1);
@@ -50,8 +50,8 @@ public class StandingState : PlayerState {
 	}
 
 	override public void Right () {
-		float vx = player.rigidbody2D.velocity.x + player.groundAcceleration;
-		vx = Mathf.Clamp(vx, -player.maxGroundVelocity, player.maxGroundVelocity);
+		float vx = player.rigidbody2D.velocity.x + player.GroundAcceleration;
+		vx = Mathf.Clamp(vx, -player.MaximumGroundVelocity, player.MaximumGroundVelocity);
 		player.rigidbody2D.velocity = new Vector2(vx, player.rigidbody2D.velocity.y);
 
 		player.transform.localScale = new Vector3(1,1,1);
