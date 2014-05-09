@@ -2,7 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(PlayerStateManager))]
 public class PlayerController : MonoBehaviour {
+
+	private PlayerStateManager _playerStateManager;
 
 	private MultiJump _multiJump;
 	public MultiJump MultiJump {
@@ -19,70 +22,12 @@ public class PlayerController : MonoBehaviour {
 	public List<Transform> spawnPoints;
 
 	private AudioClip[] sounds;
-	
-	[SerializeField]
-	private float _groundAccel = 2.6f; // float instead of vector because on ground (only X)
-	public float GroundAcceleration {
-		get { return _groundAccel;}
-	}
-
-	[SerializeField]
-	private float _maxGroundVel = 8f; // float instead of vector because on ground (only X)
-	public float MaximumGroundVelocity {
-		get { return _maxGroundVel; }
-	}
-
-	[SerializeField]
-	private float _instantJumpVel = 8f; // float instead of vector because straight jump (only Y)
-	public float InstantJumpVelocity {
-		get { return _instantJumpVel; }
-	}
-
-	[SerializeField]
-	private Vector2 _airAccel = new Vector2(0,0.1f);
-	public Vector2 AirAcceleration {
-		get { return _airAccel; }
-		set { _airAccel = value; }
-	}
-	public float HorizontalAirAcceleration { 
-		get { return _airAccel.x; }
-	}
-	public float VerticalAirAcceleration {
-		get { return _airAccel.y; }
-	}
-
-	[SerializeField]
-	private Vector2 _maxAirVel = new Vector2 (8, 14);
-	public Vector2 MaximumAirVelocity {
-		get { return _maxAirVel; }
-		set { _maxAirVel = value; }
-	}
-	public float MaximumHorizontalAirVelocity {
-		get { return _maxAirVel.x; }
-	}
-	public float MaximumVerticalAirVelocity {
-		get { return _maxAirVel.y; }
-	}
-
-	[SerializeField]
-	private float _stompJumpTimeout = 0.2f; // seconds
-	public float StompJumpTimeout {
-		get { return _stompJumpTimeout; }
-	}
 
 	[SerializeField]
 	private float _respawnTimeout = 2f; // seconds
 	public float RespawnTimeout {
 		get { return _respawnTimeout; }
 	}
-
-	[SerializeField]
-	private Vector2 _wallJumpInstantVelocity = Vector2.one * 5f;
-	public Vector2 InstantWallJumpVelocity {
-		get { return _wallJumpInstantVelocity; }
-		set { _wallJumpInstantVelocity = value; }
-	}
-
 
 	private bool _wallRight;
 	public bool wallRight {
@@ -120,6 +65,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Awake () {
+		_playerStateManager = GetComponent<PlayerStateManager> ();
 		_multiJump = GetComponent<MultiJump> ();
 		sounds = new AudioClip[4];
 		sounds [(int)SoundEffects.Explosion] = 	(AudioClip)Resources.Load ("explosion");
@@ -135,23 +81,23 @@ public class PlayerController : MonoBehaviour {
 
 		// initialize states once (no gc)
 		states = new Dictionary<System.Type, PlayerState>();
-		states.Add(typeof(StandingState), new StandingState(this));
-		states.Add(typeof(JumpingState), new JumpingState(this));
-		states.Add(typeof(StompingState), new StompingState(this));
-		states.Add(typeof(FallingState), new FallingState(this));
-		states.Add(typeof(WallSlidingState), new WallSlidingState(this));
-		states.Add(typeof(DyingState), new DyingState(this)); 
+		//states.Add(typeof(StandingState), new StandingState(this));
+		//states.Add(typeof(JumpingState), new JumpingState(this));
+		//states.Add(typeof(StompingState), new StompingState(this));
+		//states.Add(typeof(FallingState), new FallingState(this));
+		//states.Add(typeof(WallSlidingState), new WallSlidingState(this));
+		//states.Add(typeof(DyingState), new DyingState(this)); 
 		
 		// enter the initial state
-		currentState = states[typeof(StandingState)];
-		currentState.OnEnter();
+		//currentState = states[typeof(DyingState)];
+		//currentState.OnEnter();
 	}
 
 	public void EnterState (System.Type newState) {
 		Debug.Log("Player " + Joystick + " transitioning from " + currentState.GetType() + " to " + newState);
-		currentState.OnExit();
-		currentState = states[newState];
-		currentState.OnEnter();
+		//currentState.OnExit();
+		//currentState = states[newState];
+		//currentState.OnEnter();
 	}
 
 	void OnCollisionEnter2D(Collision2D coll){
@@ -170,19 +116,19 @@ public class PlayerController : MonoBehaviour {
 					wall = true;
 				}
 				else{
-					currentState.Idle();
+					//currentState.Idle();
 				}
 			}
 
 			if (floor) {
-				currentState.HitFloor();
+				//currentState.HitFloor();
 			} else if (wall) {
-				currentState.HitWall();
+				//currentState.HitWall();
 			} // else ceiling
 		}
 
 		if (coll.gameObject.tag == "Player") {
-			currentState.HitPlayer(coll);
+			//currentState.HitPlayer(coll);
 		}
 	}
 
@@ -225,18 +171,18 @@ public class PlayerController : MonoBehaviour {
 //			{
 //				Debug.Log("FLAG");
 //			}
-			currentState.Jump();
+			//currentState.Jump();
 		}
 
 		if (Input.GetAxis("L_XAxis_"+Joystick) > 0) {
-			currentState.Right();
+			//currentState.Right();
 		} else if (Input.GetAxis("L_XAxis_"+Joystick) < 0) {
-			currentState.Left();
+			//currentState.Left();
 		} else {
-			currentState.Idle();
+			//currentState.Idle();
 		}
 
-		currentState.Update();
+		//currentState.Update();
 	}
 
 	public void FinishedExploding () {

@@ -1,12 +1,52 @@
 using UnityEngine;
 using System.Collections;
 
-public class StompingState : StandingState {
+public class StompingState : PlayerState {
 
-	public StompingState (PlayerController player) : base (player) {}
+	[SerializeField]
+	private float _stompJumpTimeout = 0.2f; // seconds
+	public float StompJumpTimeout {
+		get { return _stompJumpTimeout; }
+	}
 
-	float countdown;
+	protected override void Awake ()
+	{
 
+	}
+
+	protected override void Start ()
+	{
+
+	}
+
+	protected override void Update ()
+	{
+
+	}
+
+	protected override void FixedUpdate ()
+	{
+
+	}
+
+	protected override void OnEnable ()
+	{
+
+	}
+
+	protected override void OnDisable ()
+	{
+
+	}
+
+	protected override void PerformAction ()
+	{
+
+	}
+	//public StompingState (PlayerController player) : base (player) {}
+
+	//float countdown;
+	/*
 	override public void Jump () {
 		Debug.Log("Player " + player.Joystick + " Stomping Jump");
 		player.EnterState(typeof(JumpingState));
@@ -25,6 +65,6 @@ public class StompingState : StandingState {
 		if (countdown < 0) {
 			player.EnterState(typeof(FallingState));
 		}
-	}
+	}*/
 
 }

@@ -1,8 +1,54 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class WallSlidingState : FallingState {
+public class WallSlidingState : PlayerState {
 
+	
+	[SerializeField]
+	private Vector2 _wallJumpInstantVelocity = Vector2.one * 5f;
+	public Vector2 InstantWallJumpVelocity {
+		get { return _wallJumpInstantVelocity; }
+		set { _wallJumpInstantVelocity = value; }
+	}
+	
+	
+	protected override void Awake ()
+	{
+		
+	}
+	
+	protected override void Start ()
+	{
+		
+	}
+	
+	protected override void Update ()
+	{
+		
+	}
+	
+	protected override void FixedUpdate ()
+	{
+		
+	}
+	
+	protected override void OnEnable ()
+	{
+		
+    }
+    
+	protected override void OnDisable ()
+    {
+        
+    }
+    
+    protected override void PerformAction ()
+	{
+		
+	}
+
+
+	/*
 	public bool right;
 
 	public WallSlidingState (PlayerController c) : base (c) {}
@@ -20,5 +66,5 @@ public class WallSlidingState : FallingState {
 
 		player.PlaySound (SoundEffects.WallJump);
 	}
-
+*/
 }

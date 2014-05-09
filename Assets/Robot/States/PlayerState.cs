@@ -1,28 +1,24 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
-public class PlayerState {
+[RequireComponent(typeof(PlayerController))]
+[RequireComponent(typeof(PlayerStateManager))]
+[RequireComponent(typeof(MultiJump))]
+public class PlayerState : MonoBehaviour {
 
-	protected PlayerController player;
+	protected PlayerController _player;
+	protected MultiJump _multiJump;
+	
+	protected Func<bool>[] 	_exitActions;
+	protected PlayerState		_exitState; // will be set by exit actions
 
-	public PlayerState (PlayerController player) {
-		this.player = player;
-	}
+	protected virtual void PerformAction () {}
 
-	virtual public void OnEnter () {}
-	virtual public void OnExit () {}
-
-	virtual public void Jump () {}
-	virtual public void Throw () {}
-
-	virtual public void Left () {}
-	virtual public void Right () {}
-	virtual public void Idle () {}
-
-	virtual public void HitFloor () {}
-	virtual public void HitWall () {}
-	virtual public void HitPlayer (Collision2D coll) {}
-
-	virtual public void Update () {}
-
+	protected virtual void Awake () {}
+	protected virtual void Start () {}
+	protected virtual void Update () {}
+	protected virtual void FixedUpdate () {}
+	protected virtual void OnEnable () {}
+	protected virtual void OnDisable () {}
 }

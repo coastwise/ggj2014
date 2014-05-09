@@ -1,8 +1,52 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(FallingState))]
 public class JumpingState : PlayerState {
+
+	private FallingState _fallingState;
+
+	[SerializeField]
+	private float _instantJumpVel = 8f; // float instead of vector because straight jump (only Y)
+	public float InstantJumpVelocity {
+		get { return _instantJumpVel; }
+	}
 	
+	protected override void Awake ()
+	{
+		_fallingState = GetComponent<FallingState> ();
+	}
+	
+	protected override void Start ()
+	{
+		
+	}
+	
+	protected override void Update ()
+	{
+		
+	}
+	
+	protected override void FixedUpdate ()
+	{
+		
+	}
+	
+	protected override void OnEnable ()
+	{
+		
+    }
+    
+	protected override void OnDisable ()
+    {
+        
+    }
+    
+    protected override void PerformAction ()
+	{
+		
+	}
+	/*
 	public JumpingState (PlayerController player) : base (player) {}
 
 	public override void OnEnter () { 
@@ -85,5 +129,5 @@ public class JumpingState : PlayerState {
 
 		player.GetComponent<Animator>().SetFloat("y-velocity", player.rigidbody2D.velocity.y);
 	}
-	
+	*/
 }

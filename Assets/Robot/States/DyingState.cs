@@ -3,6 +3,41 @@ using System.Collections;
 
 public class DyingState : PlayerState {
 	
+	protected override void Awake ()
+	{
+		
+	}
+	
+	protected override void Start ()
+	{
+		
+	}
+	
+	protected override void Update ()
+	{
+		
+	}
+	
+	protected override void FixedUpdate ()
+	{
+		
+	}
+	
+	protected override void OnEnable ()
+	{
+		
+    }
+    
+	protected override void OnDisable ()
+    {
+        
+    }
+    
+    protected override void PerformAction ()
+	{
+		
+	}
+	/*
 	public DyingState (PlayerController player) : base (player) {}
 
 	float countdown;
@@ -31,5 +66,5 @@ public class DyingState : PlayerState {
 			player.Respawn();
 		}
 	}
-
+	*/
 }

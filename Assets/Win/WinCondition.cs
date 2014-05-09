@@ -16,20 +16,17 @@ public class WinCondition : MonoBehaviour {
 
 	bool hasWon = false;
 
-
 	// Use this for initialization
 	void Start () {
 		winTint.enabled = false;
 		playerWinnerText.enabled = false;
 		winnerText.enabled = false;
 		newGameText.enabled = false;
-
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (hasWon) {
-
 			if (Input.GetButtonDown("Start_1") ||
 			    Input.GetButtonDown("Start_2") ||
 			    Input.GetButtonDown("Start_3") ||
@@ -49,9 +46,6 @@ public class WinCondition : MonoBehaviour {
 				Application.LoadLevel("CharacterSelect");
 				
 			}
-			
-
-
 
 		}
 	}
