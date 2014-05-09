@@ -6,6 +6,9 @@ using System.Collections.Generic;
 public class PlayerController : MonoBehaviour {
 
 	private PlayerStateManager _playerStateManager;
+	public PlayerStateManager PlayerStateManager {
+		get { return _playerStateManager; }
+	}
 
 	private MultiJump _multiJump;
 	public MultiJump MultiJump {

@@ -34,7 +34,7 @@ public class JumpingState : PlayerState {
 	
 	protected override void OnEnable ()
 	{
-		
+		Debug.Log ("Entered Jumping State");
     }
     
 	protected override void OnDisable ()

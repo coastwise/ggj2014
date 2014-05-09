@@ -14,10 +14,17 @@ public class PlayerStateManager : MonoBehaviour {
 	private PlayerState _currState;
 	public PlayerState CurrentState {
 		get { return _currState; }
-		set { _currState = value; }
 	}
 
 	void Awake () {
 		_player = GetComponent<PlayerController> ();
+	}
+
+	public void Transition (PlayerState current, PlayerState next)
+	{
+		_prevState = current;
+		_currState = next;
+		current.enabled = false;
+		next.enabled = true;
 	}
 }
