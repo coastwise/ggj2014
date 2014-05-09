@@ -64,7 +64,7 @@ public class BoomerangController : MonoBehaviour
 				player.FireableBoomerangs += 1;
 				Destroy(this.gameObject);
 			} else {
-				if (!player.Invincible) player.EnterState(typeof(DyingState));
+				if (!player.Invincible) player.PlayerStateManager.Transition(player.PlayerStateManager.CurrentState, player.GetComponent<DyingState>());
 				rigidbody2D.gravityScale = 0.1f;
 				_isActive = false;
 

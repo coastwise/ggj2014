@@ -79,28 +79,7 @@ public class PlayerController : MonoBehaviour {
 
 	void Start () {
 		name = "Player " + Joystick;
-
 		_cachedPlayerTint = gameObject.GetComponent<SpriteRenderer>().color;
-
-		// initialize states once (no gc)
-		states = new Dictionary<System.Type, PlayerState>();
-		//states.Add(typeof(StandingState), new StandingState(this));
-		//states.Add(typeof(JumpingState), new JumpingState(this));
-		//states.Add(typeof(StompingState), new StompingState(this));
-		//states.Add(typeof(FallingState), new FallingState(this));
-		//states.Add(typeof(WallSlidingState), new WallSlidingState(this));
-		//states.Add(typeof(DyingState), new DyingState(this)); 
-		
-		// enter the initial state
-		//currentState = states[typeof(DyingState)];
-		//currentState.OnEnter();
-	}
-
-	public void EnterState (System.Type newState) {
-		Debug.Log("Player " + Joystick + " transitioning from " + currentState.GetType() + " to " + newState);
-		//currentState.OnExit();
-		//currentState = states[newState];
-		//currentState.OnEnter();
 	}
 
 	void OnCollisionEnter2D(Collision2D coll){
@@ -139,53 +118,6 @@ public class PlayerController : MonoBehaviour {
 
 	void Update () {
 
-		// check my input and call state methods
-		if (Input.GetButtonDown("X_"+Joystick) && _fireableBoomerangs > 0)
-		{
-			float xAxis = Input.GetAxis("L_XAxis_"+Joystick);
-			if (xAxis > 0.0f)
-				xAxis = 1.0f;
-			else if (xAxis < 0.0f)
-				xAxis = -1.0f;
-
-			float yAxis = Input.GetAxis("L_YAxis_"+Joystick);
-			if (yAxis > 0.0f)
-				yAxis = 1.0f;
-			else if (yAxis < 0.0f)
-				yAxis = -1.0f;
-
-			Vector3 projectileDirection = new Vector3(xAxis, -yAxis, 0.0f).normalized;
-			if (projectileDirection == Vector3.zero)
-				projectileDirection += Vector3.right * gameObject.transform.localScale.x;
-
-				float offset = 0.8f;
-				if (yAxis == 0.0f)
-					offset = 0.5f;
-				GameObject boomerang = (GameObject)Instantiate(_boomerangPrefab, transform.position + (projectileDirection * offset), Quaternion.identity);
-				boomerang.GetComponent<BoomerangController>().CreateBoomerang(this.gameObject, projectileDirection);
-				_fireableBoomerangs -= 1;
-
-			PlaySound(SoundEffects.Throw);
-		}
-
-		if (Input.GetButtonDown("A_"+Joystick))
-		{
-//			if ((currentState.GetType() == typeof(JumpingState) || currentState.GetType() == typeof(FallingState)) && _canDoublejump)
-//			{
-//				Debug.Log("FLAG");
-//			}
-			//currentState.Jump();
-		}
-
-		if (Input.GetAxis("L_XAxis_"+Joystick) > 0) {
-			//currentState.Right();
-		} else if (Input.GetAxis("L_XAxis_"+Joystick) < 0) {
-			//currentState.Left();
-		} else {
-			//currentState.Idle();
-		}
-
-		//currentState.Update();
 	}
 
 	public void FinishedExploding () {
@@ -201,7 +133,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public IEnumerator BlinkForAWhile () {
-		for(int i = 0; i < 60; i++) {
+		for(float i = 0; i < 2; i += Time.deltaTime) {
 			yield return null;
 			gameObject.renderer.enabled = false;
 			yield return null;

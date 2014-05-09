@@ -18,6 +18,10 @@ public class PlayerStateManager : MonoBehaviour {
 
 	void Awake () {
 		_player = GetComponent<PlayerController> ();
+		if (_currState == null) {
+			// do a linq search and automatically find the enabled playerstate
+			_currState = GetComponent<StandingState>();
+		}
 	}
 
 	public void Transition (PlayerState current, PlayerState next)

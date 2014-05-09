@@ -5,7 +5,7 @@ public class MultiJump : MonoBehaviour {
 
 	private int jumpCount = 0;
 
-	private int maxJumpCount = 1;
+	private int maxJumpCount = 2;
 	public int MaxJumpCount {
 		get {
 			return maxJumpCount;
@@ -23,14 +23,17 @@ public class MultiJump : MonoBehaviour {
 		jumpCount = 0;
 	}
 
-	public void SpawnDoublejumpExplosion() {
+	private void SpawnDoublejumpExplosion() {
 		Instantiate(jumpExplosion, 
 		            transform.position + (Vector3.down * 0.2f), 
 		            Quaternion.identity);
-		IncrementJump ();
 	}
 
-	private void IncrementJump () {
+	public void IncrementJump () {
+		if (jumpCount >= 1) {
+			SpawnDoublejumpExplosion ();
+		}
+
 		if (++jumpCount >= MaxJumpCount) {
 			enabled = false;
 		}

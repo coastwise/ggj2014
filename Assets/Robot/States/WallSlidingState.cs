@@ -10,11 +10,17 @@ public class WallSlidingState : PlayerState {
 		get { return _wallJumpInstantVelocity; }
 		set { _wallJumpInstantVelocity = value; }
 	}
+
+	private bool _wallDirection; // left false, right true
+	public bool WallDirection {
+		get { return _wallDirection; }
+		set { _wallDirection = value; }
+	}
 	
 	
 	protected override void Awake ()
 	{
-		
+		base.Awake ();
 	}
 	
 	protected override void Start ()

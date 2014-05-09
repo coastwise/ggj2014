@@ -29,4 +29,6 @@ public class PlayerState : MonoBehaviour {
 	protected virtual void OnEnable () {}
 	protected virtual void OnDisable () {}
 
+	protected virtual void OnCollisionEnter2D (Collision2D coll) {}
+
 }

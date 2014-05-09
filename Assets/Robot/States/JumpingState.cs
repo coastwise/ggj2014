@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 [RequireComponent(typeof(FallingState))]
@@ -14,7 +15,10 @@ public class JumpingState : PlayerState {
 	
 	protected override void Awake ()
 	{
+		base.Awake ();
 		_fallingState = GetComponent<FallingState> ();
+		_exitActions = new Func<bool>[] { Throw, Jump, Falling };
+
 	}
 	
 	protected override void Start ()
@@ -24,7 +28,11 @@ public class JumpingState : PlayerState {
 	
 	protected override void Update ()
 	{
+		foreach (Func<bool> f in _exitActions) {
+			if (f()) _manager.Transition (this, _exitState);
+		}
 		
+		PerformAction ();
 	}
 	
 	protected override void FixedUpdate ()
@@ -35,6 +43,10 @@ public class JumpingState : PlayerState {
 	protected override void OnEnable ()
 	{
 		Debug.Log ("Entered Jumping State");
+		gameObject.rigidbody2D.velocity += Vector2.up * InstantJumpVelocity;
+		_player.PlaySound (SoundEffects.Jump);
+
+		_multiJump.IncrementJump ();
     }
     
 	protected override void OnDisable ()
@@ -44,90 +56,124 @@ public class JumpingState : PlayerState {
     
     protected override void PerformAction ()
 	{
+		Left 	(Input.GetAxis ("L_XAxis_" + _player.Joystick) < 0);
+		Right 	(Input.GetAxis ("L_XAxis_" + _player.Joystick) > 0);
+
+		float vy = rigidbody2D.velocity.y;
+		vy = Mathf.Clamp (vy, -_fallingState.MaximumAirVelocity.y, _fallingState.MaximumAirVelocity.y);
+		rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, vy);
+	}
+
+	protected override void OnCollisionEnter2D (Collision2D coll)
+	{
+		if(coll.gameObject.tag == "floor") {
+			bool wall = false;
+			bool floor = false;
+			
+			foreach (ContactPoint2D contact in coll.contacts) {
+				//Debug.Log(name + " contact normal " + contact.normal);
+				if (contact.normal == Vector2.up) {
+					_exitState = GetComponent<StandingState>();
+					_manager.Transition(this, _exitState);
+					return;
+				} 
+				else if (contact.normal == Vector2.right || contact.normal == -Vector2.right) {
+					GetComponent<WallSlidingState>().WallDirection = contact.normal != Vector2.right;
+					_exitState = GetComponent<WallSlidingState>();
+					_manager.Transition(this, _exitState);
+					return;
+				}
+				else{
+					_exitState = GetComponent<FallingState>();
+					_manager.Transition(this, _exitState);
+					return;
+				}
+			}
+		}
 		
+		if (coll.gameObject.tag == "Player") {
+			HitPlayer(coll);
+		}
+	}
+
+	void Left (bool condition) {
+		if (condition) {
+			float vx = rigidbody2D.velocity.x - _fallingState.AirAcceleration.x;
+			vx = Mathf.Clamp (vx, -_fallingState.MaximumAirVelocity.x, _fallingState.MaximumAirVelocity.x);
+
+			rigidbody2D.velocity = new Vector2 (vx, rigidbody2D.velocity.y);
+		}
+	}
+
+	void Right (bool condition) {
+		if (condition) {
+			float vx = rigidbody2D.velocity.x + _fallingState.AirAcceleration.x;
+			vx = Mathf.Clamp (vx, -_fallingState.MaximumAirVelocity.x, _fallingState.MaximumAirVelocity.x);
+			rigidbody2D.velocity = new Vector2 (vx, rigidbody2D.velocity.y);
+		}
+	}
+
+	bool Throw ()
+	{
+		if (Input.GetButtonDown("X_"+_player.Joystick) && _player.FireableBoomerangs > 0)
+		{
+			//_exitState = GetComponent<ThrowingState>();
+			GetComponent<ThrowingState>().enabled = true;
+			//return true;
+		}
+		return false;
+	}
+
+	bool Jump () {
+		if (Input.GetButtonDown ("A_" + _player.Joystick) &&
+		    _multiJump.enabled)
+		{
+			_exitState = this;
+			return true;
+		}
+		return false;
+	}
+
+	bool Falling () {
+		if (rigidbody2D.velocity.y < 0) {
+			_exitState = GetComponent<FallingState>();
+			return true;
+		}
+		return false;
+	}
+
+	private void HitPlayer (Collision2D coll) {
+		// we don't care if we're on our way up
+		if (rigidbody2D.velocity.y > 0) return;
+		
+		float deltaY = transform.position.y - coll.transform.position.y;
+		Debug.Log("delta y " + deltaY);
+		if (deltaY > 1f) {
+			//coll.gameObject.GetComponent<PlayerController>();
+			Debug.Log(_player.name + " stomped " + coll.gameObject.name);
+			
+			PlayerController other = coll.gameObject.GetComponent<PlayerController>();
+			if (!other.Invincible) {
+				other.PlayerStateManager.Transition(other.PlayerStateManager.CurrentState,
+				                                    other.GetComponent<DyingState>());
+				return;
+			}
+			_player.IncrementKill();
+			
+			_exitState = GetComponent<StompingState>();
+			_manager.Transition(this, _exitState);
+
+			GameObject.Find ("killcount" + _player.Joystick).GetComponent<GUIText>().text = "x" + _player.KillCount;
+			GameObject.Find ("Win").GetComponent<WinCondition>().CheckWinner();
+		}
 	}
 	/*
-	public JumpingState (PlayerController player) : base (player) {}
-
-	public override void OnEnter () { 
-
-		player.gameObject.rigidbody2D.velocity += Vector2.up * player.InstantJumpVelocity;
-		player.GetComponent<Animator>().SetTrigger("Jump");
-
-		player.PlaySound (SoundEffects.Jump);
-
-		if(!player.MultiJump.enabled){
-			player.GetComponent<Animator>().SetBool("Land", false);
-		}
-	}
-	
-	override public void Jump () {
-		//Debug.Log("Player " + player.joystick + " Jumping Jump");
 
 
 
-		if (player.MultiJump.enabled)
-		{
-			player.GetComponent<MultiJump>().SpawnDoublejumpExplosion();
-			player.EnterState(typeof(JumpingState));
-		}
-	}
-	
-	override public void Throw () {
-		Debug.Log("Player " + player.Joystick + " Jumping Throw");
-	}
-
-	override public void Left () {
-		float vx = player.rigidbody2D.velocity.x - player.AirAcceleration.x;
-		vx = Mathf.Clamp(vx, -player.MaximumAirVelocity.x, player.MaximumAirVelocity.x);
-
-		player.rigidbody2D.velocity = new Vector2(vx, player.rigidbody2D.velocity.y);
-	}
-	
-	override public void Right () {
-		float vx = player.rigidbody2D.velocity.x + player.AirAcceleration.x;
-		vx = Mathf.Clamp(vx, -player.MaximumAirVelocity.x, player.MaximumAirVelocity.x);
-		player.rigidbody2D.velocity = new Vector2(vx, player.rigidbody2D.velocity.y);
-	}
-
-	override public void HitFloor(){
-		Debug.Log("Player " + player.Joystick + " Landed");
-		player.EnterState(typeof(StandingState));
-
-		player.GetComponent<Animator>().SetBool("Land", true);
-	}
-
-	override public void HitWall () {
-		player.EnterState(typeof(WallSlidingState));
-	}
-
-	public override void HitPlayer (Collision2D coll) {
-		// we don't care if we're on our way up
-		if (player.rigidbody2D.velocity.y > 0) return;
-
-		float deltaY = player.transform.position.y - coll.transform.position.y;
-		Debug.Log("delta y " + deltaY);
-		if (deltaY > 0.5f) {
-			//coll.gameObject.GetComponent<PlayerController>();
-			Debug.Log(player.name + " stomped " + coll.gameObject.name);
-
-			PlayerController other = coll.gameObject.GetComponent<PlayerController>();
-			if (!other.Invincible) other.EnterState(typeof(DyingState));
-
-			player.EnterState(typeof(StompingState));
-			player.IncrementKill();
-			GameObject.Find ("killcount" + player.Joystick).GetComponent<GUIText>().text = "x" + player.KillCount;
-			GameObject.Find ("Win").GetComponent<WinCondition>().CheckWinner();
-
-		}
-	}
 
 	public override void Update () {
-		float vy = player.rigidbody2D.velocity.y;
-		vy = Mathf.Clamp (vy, -player.MaximumAirVelocity.y, player.MaximumAirVelocity.y);
-		player.rigidbody2D.velocity = new Vector2(player.rigidbody2D.velocity.x, vy);
 
-		player.GetComponent<Animator>().SetFloat("y-velocity", player.rigidbody2D.velocity.y);
 	}
 	*/
 }
