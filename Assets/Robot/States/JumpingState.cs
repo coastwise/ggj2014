@@ -66,6 +66,8 @@ public class JumpingState : PlayerState {
 
 	protected override void OnCollisionEnter2D (Collision2D coll)
 	{
+		if (enabled == false) return;
+
 		if(coll.gameObject.tag == "floor") {
 			bool wall = false;
 			bool floor = false;
@@ -167,13 +169,4 @@ public class JumpingState : PlayerState {
 			GameObject.Find ("Win").GetComponent<WinCondition>().CheckWinner();
 		}
 	}
-	/*
-
-
-
-
-	public override void Update () {
-
-	}
-	*/
 }

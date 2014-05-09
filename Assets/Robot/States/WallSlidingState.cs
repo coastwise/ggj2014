@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 public class WallSlidingState : PlayerState {
@@ -16,11 +17,14 @@ public class WallSlidingState : PlayerState {
 		get { return _wallDirection; }
 		set { _wallDirection = value; }
 	}
+
+	private bool isOnWall = false;
 	
 	
 	protected override void Awake ()
 	{
 		base.Awake ();
+		_exitActions = new Func<bool>[] { Jump };
 	}
 	
 	protected override void Start ()
@@ -30,7 +34,11 @@ public class WallSlidingState : PlayerState {
 	
 	protected override void Update ()
 	{
-		
+		foreach (Func<bool> f in _exitActions) {
+			if (f()) _manager.Transition(this, _exitState);
+		}
+
+		PerformAction ();
 	}
 	
 	protected override void FixedUpdate ()
@@ -53,24 +61,71 @@ public class WallSlidingState : PlayerState {
 		
 	}
 
+	protected override void OnCollisionEnter2D (Collision2D coll)
+	{
+		if (enabled == false) return;
 
-	/*
-	public bool right;
+		if(coll.gameObject.tag == "floor") {
+			
+			foreach (ContactPoint2D contact in coll.contacts) {
 
-	public WallSlidingState (PlayerController c) : base (c) {}
+				if (contact.normal == Vector2.right || contact.normal == -Vector2.right) {
 
-	override public void Jump () {
-		Vector2 jump = player.InstantWallJumpVelocity;
-		if (player.wallRight) {
-			jump = new Vector2(jump.x * -1, jump.y);
+					isOnWall = true;
+				}
+
+			}
+		}
+	}
+
+	protected override void OnCollisionExit2D (Collision2D coll)
+	{
+		
+		if (enabled == false) return;
+
+		if(coll.gameObject.tag == "floor") {
+			
+			foreach (ContactPoint2D contact in coll.contacts) {
+				//Debug.Log(name + " contact normal " + contact.normal);
+				if (contact.normal == Vector2.up) {
+					_exitState = GetComponent<FallingState>();
+					_manager.Transition(this, _exitState);
+					return;
+				} 
+				else if (contact.normal == Vector2.right || contact.normal == -Vector2.right) {
+					GetComponent<WallSlidingState>().WallDirection = contact.normal != Vector2.right;
+					_exitState = GetComponent<FallingState>();
+					_manager.Transition(this, _exitState);
+					return;
+				}
+				else{
+					_exitState = GetComponent<FallingState>();
+					_manager.Transition(this, _exitState);
+					return;
+				}
+			}
+		}
+	}
+
+	bool Jump ()
+	{
+		if (Input.GetButtonDown ("A_" + _player.Joystick)) {
+			Vector2 jump = InstantWallJumpVelocity;
+			if (WallDirection) {
+					jump = new Vector2 (jump.x * -1, jump.y);
+			}
+
+			gameObject.rigidbody2D.velocity += jump;
+			_player.PlaySound (SoundEffects.WallJump);
+
+			_exitState = GetComponent<FallingState> ();
+			return true;
 		}
 
-		player.gameObject.rigidbody2D.velocity += jump;
-
-		player.EnterState(typeof(FallingState));
-		player.GetComponent<Animator>().SetTrigger("Jump");
-
-		player.PlaySound (SoundEffects.WallJump);
+		return false;
 	}
-*/
+
+
+
+
 }

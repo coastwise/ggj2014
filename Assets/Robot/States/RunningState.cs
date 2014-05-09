@@ -19,7 +19,7 @@ public class RunningState : PlayerState {
 	protected override void Awake ()
 	{
 		base.Awake ();
-		_exitActions = new Func<bool>[]{ Stop, Throw };
+		_exitActions = new Func<bool>[]{ Stop, Throw, Jump };
 	}
 
 	protected override void Start ()
@@ -94,6 +94,20 @@ public class RunningState : PlayerState {
 		
 		
 		//Debug.Log("Player " + _player.Joystick + " StandingState: Throw");
+		return false;
+	}
+
+	bool Jump () {
+		if (Input.GetButtonDown ("A_" + _player.Joystick)) {
+			RaycastHit2D hitL = Physics2D.Raycast((Vector2)(transform.position) + Vector2.up * 0.52f + Vector2.right * -0.2f,Vector2.up,0.06f, gameObject.layer-4);
+			RaycastHit2D hitR = Physics2D.Raycast((Vector2)(transform.position) + Vector2.up * 0.52f + Vector2.right * 0.2f,Vector2.up,0.06f, gameObject.layer-4);
+			if (hitL.collider == null && hitR.collider == null) {
+				_exitState = GetComponent<JumpingState>();
+				return true;
+			} else {
+				Debug.Log ("Tried to jump but obstacle above you, no point exiting state.");
+			}
+		}
 		return false;
 	}
 }

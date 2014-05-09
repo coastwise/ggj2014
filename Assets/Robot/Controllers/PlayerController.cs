@@ -82,40 +82,6 @@ public class PlayerController : MonoBehaviour {
 		_cachedPlayerTint = gameObject.GetComponent<SpriteRenderer>().color;
 	}
 
-	void OnCollisionEnter2D(Collision2D coll){
-
-		if(coll.gameObject.tag == "floor") {
-			bool wall = false;
-			bool floor = false;
-
-			foreach (ContactPoint2D contact in coll.contacts) {
-				//Debug.Log(name + " contact normal " + contact.normal);
-				if (contact.normal == Vector2.up) {
-					floor = true;
-				} 
-				else if (contact.normal == Vector2.right || contact.normal == -Vector2.right) {
-					wallRight = contact.normal != Vector2.right;
-					wall = true;
-				}
-				else{
-					//currentState.Idle();
-				}
-			}
-
-			if (floor) {
-				//currentState.HitFloor();
-			} else if (wall) {
-				//currentState.HitWall();
-			} // else ceiling
-		}
-
-		if (coll.gameObject.tag == "Player") {
-			//currentState.HitPlayer(coll);
-		}
-	}
-
-
-
 	void Update () {
 
 	}

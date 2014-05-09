@@ -26,9 +26,12 @@ public class PlayerState : MonoBehaviour {
 	protected virtual void Start () {}
 	protected virtual void Update () {}
 	protected virtual void FixedUpdate () {}
+
 	protected virtual void OnEnable () {}
 	protected virtual void OnDisable () {}
 
-	protected virtual void OnCollisionEnter2D (Collision2D coll) {}
+	protected virtual void OnCollisionEnter2D (Collision2D coll) {
+	}
+	protected virtual void OnCollisionExit2D (Collision2D coll) {}
 
 }

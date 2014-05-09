@@ -37,6 +37,19 @@ public class DyingState : PlayerState {
 	{
 		
 	}
+
+	protected override void OnCollisionEnter2D (Collision2D coll)
+	{
+		
+		if (enabled == false) return;
+	}
+
+	protected override void OnCollisionExit2D (Collision2D coll)
+	{
+		
+		if (enabled == false) return;
+	}
+
 	/*
 	public DyingState (PlayerController player) : base (player) {}
 
