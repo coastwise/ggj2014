@@ -3,6 +3,7 @@ using System.Collections;
 
 public class GuiGameObject : MonoBehaviour
 {
+	//TODO change these arrays to ArrayLists and populate them according to the CharacterSelect static variables
 	public Texture _textureP1Pointer, _textureP2Pointer, _textureP3Pointer, _textureP4Pointer, _miniBoomerang;
 
 	private float[] _pointerFullWidths = new float[] {17.0f, 23.0f, 22.0f, 23.0f};
@@ -13,6 +14,12 @@ public class GuiGameObject : MonoBehaviour
 
 	void Start()
 	{
+
+		Debug.Log("yellow " + CharacterSelect.yellowPlayer);
+		Debug.Log("green " + CharacterSelect.greenPlayer);
+		Debug.Log("red " + CharacterSelect.redPlayer);
+		Debug.Log("blue " + CharacterSelect.bluePlayer);
+
 		//Screen.SetResolution(512,288,true);
 		//Screen.SetResolution(1024,576,true);
 		_pointerTextures = new Texture[] {_textureP1Pointer, _textureP2Pointer, _textureP3Pointer, _textureP4Pointer};

@@ -126,9 +126,11 @@ public class PlayerController : MonoBehaviour {
 		sounds [(int)SoundEffects.Jump] = 		(AudioClip)Resources.Load ("jump");
 		sounds [(int)SoundEffects.Throw] = 		(AudioClip)Resources.Load ("boomerang1");
 		sounds [(int)SoundEffects.Explosion] = 	(AudioClip)Resources.Load ("walljump");
+
 	}
 
 	void Start () {
+
 		name = "Player " + Joystick;
 
 		_cachedPlayerTint = gameObject.GetComponent<SpriteRenderer>().color;
@@ -142,6 +144,37 @@ public class PlayerController : MonoBehaviour {
 		states.Add(typeof(WallSlidingState), new WallSlidingState(this));
 		states.Add(typeof(DyingState), new DyingState(this)); 
 		
+		// check who's playing
+		if(!CharacterSelect.yellowPlayer && gameObject.layer == LayerMask.NameToLayer("yellow player")){
+			gameObject.SetActive(false);
+			Debug.Log("no yellow");
+		}
+		else if(CharacterSelect.yellowPlayer && gameObject.layer == LayerMask.NameToLayer("yellow player")){
+			Joystick = 1;
+		}
+		else if(!CharacterSelect.greenPlayer && gameObject.layer == LayerMask.NameToLayer("green player")){
+			gameObject.SetActive(false);
+			Debug.Log("no green");
+		}
+		else if(CharacterSelect.greenPlayer && gameObject.layer == LayerMask.NameToLayer("green player")){
+			Joystick = 2;
+		}
+		else if(!CharacterSelect.redPlayer && gameObject.layer == LayerMask.NameToLayer("red player")){
+			gameObject.SetActive(false);
+			Debug.Log("no red");
+		}
+		else if(CharacterSelect.redPlayer && gameObject.layer == LayerMask.NameToLayer("red player")){
+			Joystick = 3;
+			Debug.Log("joystick: " + Joystick);
+		}
+		else if(!CharacterSelect.bluePlayer && gameObject.layer == LayerMask.NameToLayer("blue player")){
+			gameObject.SetActive(false);
+			Debug.Log("no blue");
+		}
+		else if(CharacterSelect.bluePlayer && gameObject.layer == LayerMask.NameToLayer("blue player")){
+			Joystick = 4;
+		}
+
 		// enter the initial state
 		currentState = states[typeof(StandingState)];
 		currentState.OnEnter();
