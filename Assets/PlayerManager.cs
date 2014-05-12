@@ -7,11 +7,13 @@ public class PlayerManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		int i = 1;
-		foreach (GameObject go in GameObject.FindGameObjectsWithTag("Player")) 
-			go.GetComponent<PlayerController>().Joystick = i++;
-
+        Debug.Log("PlayerManager called");
+        foreach (GameObject go in GameObject.FindGameObjectsWithTag("Player")){
+            PlayerController p = go.GetComponent<PlayerController>();
+            p.Joystick = i++;
+            p.name = "Player " + p.Joystick;
+        }
 	}
-	
 	// Update is called once per frame
 	void Update () {
 	

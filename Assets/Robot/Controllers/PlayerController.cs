@@ -131,7 +131,7 @@ public class PlayerController : MonoBehaviour {
 
 	void Start () {
 
-		name = "Player " + Joystick;
+        Debug.Log("player controller called");
 
 		_cachedPlayerTint = gameObject.GetComponent<SpriteRenderer>().color;
 
